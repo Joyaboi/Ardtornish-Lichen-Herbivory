@@ -1,0 +1,145 @@
+fid,tree_species,bark_roughness_class,tree_notes,tree_id,site_id,cbh_cm,bearing,m_centroid_distance,hidden_tree_id
+12,Fagus_sylvatica,rough_b,,LAE1_TN,LAE1,39,tn,12.24,LAE1_TN
+13,Fagus_sylvatica,inter_b,Close to road,LAE1_TE,LAE1,82,te,5.62,LAE1_TE
+14,Fagus_sylvatica,inter_b,,LAE1_TS,LAE1,50.65,ts,12.1,LAE1_TS
+15,Fagus_sylvatica,rough_b,Exposed to Loch Aline,LAE1_TW,LAE1,90.25,tw,10.5,LAE1_TW
+17,Betula_sp,rough_b,"I had to reject 2 prior trees. One was too young/small, the other was unsafe (bramble)",LAN1_TN,LAN1,123,tn,19.82,LAN1_TN
+18,Betula_sp,rough_b,West side is up against some young pine tree 2m in height,LAN1_TE,LAN1,99,te,11.04,LAN1_TE
+19,Betula_sp,rough_b,Solid ivy cover,LAN1_TS,LAN1,87,ts,10.21,LAN1_TS
+20,Betula_sp,rough_b,"Old thin birch, lots of fruiticose ",LAN1_TW,LAN1,42,tw,3.83,LAN1_TW
+21,Acer_pseudoplatanus,smooth_b,Uphill by a stream,LAW1_TN,LAW1,43,tn,15.35,LAW1_TN
+22,Betula_sp,inter_b,Largest stem in a many-stem birch,LAW1_TE,LAW1,59.5,te,11.26,LAW1_TE
+23,Corylus_avellana,smooth_b,Typical multi stem hazel. Surveying widest branches,LAW1_TS,LAW1,54,ts,17.72,LAW1_TS
+24,Alnus_glutinosa,inter_b,,LAW1_TW,LAW1,43,tw,4.35,LAW1_TW
+25,Quercus_sp,rough_b,Old oak. Had to reject another oak and hazel because they were unsafe (close to river bank),LAN2_TW,LAN2,130,tw,7,LAN2_TW
+26,Sorbus_aucuparia,inter_b,"Has to reject hazel because too small/young. This Rowan splits, I use the larger stem",LAN2_TN,LAN2,52,tn,14.28,LAN2_TN
+27,Corylus_avellana,inter_b,Very old looking hazel,LAN2_TE,LAN2,42,te,12,LAN2_TE
+28,Quercus_sp,rough_b,Very old looking oak covered in moss,LAN2_TS,LAN2,138,ts,6,LAN2_TS
+29,Quercus_sp,rough_b,Very old oak. Much moss,LAN3_TN,LAN3,191,tn,18,LAN3_TN
+30,Quercus_sp,rough_b,THE NOTEPAD SAYS WEST THIS IS A LIE THE TREE IS EAST. Small cliff between centroid and tree (west of tree). I corrected the issue but the south quadrat will say TW,LAN3_TE,LAN3,111,te,5,LAN3_TE
+31,Quercus_sp,rough_b,Quite the impressive oak,LAN3_TS,LAN3,214,ts,14,LAN3_TS
+32,Quercus_sp,rough_b,Another quite old oak,LAN3_TW,LAN3,2.63,tw,14,LAN3_TW
+33,Betula_sp,inter_b,Young mature birch angled at a 45 degrees,RR1_TN,RR1,66,tn,16,RR1_TN
+34,Quercus_sp,rough_b,Fallen limb of an oak become a second trunk. Absolutely covered in rainforest indicator taxa,RR1_TW,RR1,82,tw,15,RR1_TW
+35,Quercus_sp,rough_b,Real distance is 20.8m fix that.,RR1_TS,RR1,153,ts,21,RR1_TS
+36,Quercus_sp,rough_b,Another very old oak,RR1_TE,RR1,156,te,11,RR1_TE
+37,Betula_sp,rough_b,"No trees close to 1m north so just picked the closest tree, which was to the west.",BG1_TN,BG1,52,tn,4,BG1_TN
+38,Quercus_sp,rough_b,Old oka near path,BG1_TE,BG1,182,te,9,BG1_TE
+39,Betula_sp,rough_b,Heavily damaged by an oak fall. Some sides possibly inaccessible,BG1_TS,BG1,80,ts,9,BG1_TS
+40,Betula_sp,rough_b,"Old birch, on its last legs but regenerating from the bottom",BG1_TW,BG1,41,tw,11,BG1_TW
+41,Quercus_sp,rough_b,Had to reject a birch that was too small,BG2_TN,BG2,136.5,tn,17,BG2_TN
+42,Quercus_sp,rough_b,Relatively small oak,BG2_TE,BG2,80.35,te,15,BG2_TE
+43,Quercus_sp,rough_b,Another big ol' oak. It had a cool blue lichen on it that I took a photo of but none was in any quadrats.,BG2_TS,BG2,138.5,ts,17,BG2_TS
+44,Betula_sp,inter_b,Very close to centroid.,BG2_TW,BG2,76,tw,2,BG2_TW
+45,Betula_sp,rough_b,Very old looking birch,BG3_TN,BG3,46,tn,9,BG3_TN
+46,Quercus_sp,rough_b,Most of the lower branches are dead. Healthy up top,BG3_TW,BG3,142.5,tw,4,BG3_TW
+47,Quercus_sp,rough_b,Another oak,BG3_TE,BG3,125,te,10,BG3_TE
+48,Quercus_sp,rough_b,Another oak. Midges,BG3_TS,BG3,70,ts,6,BG3_TS
+49,Quercus_sp,rough_b,A very large oak,BG4_TN,BG4,192,tn,19,BG4_TN
+50,Quercus_sp,rough_b,Another oak,BG4_TW,BG4,146.5,tw,13,BG4_TW
+51,Quercus_sp,rough_b,Lots of lichen. Midges are evil,BG4_TW,BG4,249,tw,9,BG4_TW
+52,Quercus_sp,rough_b,MIDGE,BG4_TS,BG4,209,ts,18,BG4_TS
+53,Quercus_sp,rough_b,Two stems intertwined in a helix,BG5_TN,BG5,171,tn,10,BG5_TN
+54,Quercus_sp,rough_b,Another old oak,BG5_TW,BG5,119.5,tw,7,BG5_TW
+55,Quercus_sp,rough_b,Another old oak,BG5_TE,BG5,149,te,6,BG5_TE
+56,Quercus_sp,rough_b,Another oak,BG5_TS,BG5,65.5,ts,3,BG5_TS
+57,Quercus_sp,rough_b,Another old oak,BG6_TN,BG6,127,tn,5,BG6_TN
+58,Betula_sp,rough_b,Very old looking birch ,BG6_TW,BG6,50,tw,11,BG6_TW
+59,Betula_sp,rough_b,Mature birch,BG6_TS,BG6,59,ts,8,BG6_TS
+60,Quercus_sp,rough_b,"Distance: 25.82m. fix the centroid distance range. Very old oak, multi stemmed, some stems dead.",BG6_TE,BG6,90,te,25.82,BG6_TE
+61,Quercus_sp,rough_b,Tall oak on hillside ,AGG1_TN,AGG1,1.81,tn,12.1,AGG1_TN
+62,Quercus_sp,rough_b,,AGG1_TW,AGG1,172,tw,12.84,AGG1_TW
+63,Quercus_sp,rough_b,Beautiful gigantic oak,AGG1_TS,AGG1,223,ts,19.37,AGG1_TS
+64,Quercus_sp,rough_b,"Tall oak, quite damaged by alive",AGG1_TE,AGG1,190,te,4.41,AGG1_TE
+65,Quercus_sp,rough_b,Covered in boroughs,AGG2_TN,AGG2,151,tn,14,AGG2_TN
+66,Quercus_sp,rough_b,,AGG2_TW,AGG2,216,tw,4,AGG2_TW
+67,Quercus_sp,rough_b,,AGG2_TE,AGG2,154.5,te,7.64,AGG2_TE
+68,Betula_sp,rough_b,,AGG2_TS,AGG2,57,ts,5.45,AGG2_TS
+69,Betula_sp,rough_b,On very edge of woodland,AGG3_TN,AGG3,46.5,tn,15.33,AGG3_TN
+70,Betula_sp,rough_b,Had to reject a closer tree for safety reasons (over a stream),AGG3_TW,AGG3,73,tw,7.88,AGG3_TW
+71,Betula_sp,rough_b,Biggest birch I've ever seen,AGG3_TS,AGG3,194,ts,3.89,AGG3_TS
+72,Betula_sp,inter_b,,AGG3_TE,AGG3,40,te,8.69,AGG3_TE
+73,Quercus_sp,inter_b,Looks relatively young but diseased.,AGG4_TN,AGG4,104,tn,19.4,AGG4_TN
+74,Quercus_sp,rough_b,,AGG4_TW,AGG4,1.69,tw,13.7,AGG4_TW
+75,Quercus_sp,rough_b,,AGG4_TS,AGG4,159,ts,21.34,AGG4_TS
+76,Quercus_sp,rough_b,,AGG4_TE,AGG4,240,te,14.01,AGG4_TE
+77,Quercus_sp,rough_b,,AGG5_TN,AGG5,140,tn,7.82,AGG5_TN
+78,Quercus_sp,rough_b,,AGG5_TW,AGG5,107,tw,8.59,AGG5_TW
+79,Quercus_sp,rough_b,,AGG5_TS,AGG5,124,ts,8.24,AGG5_TS
+80,Quercus_sp,rough_b,,AGG5_TE,AGG5,119,te,6.36,AGG5_TE
+81,Betula_sp,inter_b,,RA1_TS,RA1,56,ts,6.33,RA1_TS
+82,Betula_sp,inter_b,Had to reject several trees for safety (to covered in bramble),RA1_TE,RA1,86.5,te,10.1,RA1_TE
+83,Acer_pseudoplatanus,smooth_b,Near a stagnant stream. Branching stems. Measuring the larger stem.,RA1_TN,RA1,66.5,tn,14.88,RA1_TN
+84,Fraxinus_excelsior,smooth_b,,RA1_TW,RA1,68,tw,9.52,RA1_TW
+85,Corylus_avellana,inter_b,"Had to reject a dead tree. This hazel has 2 main stems, circumference is from thicker stem. Using double quadrat system on both.",RA2_TN,RA2,26.5,tn,19.43,RA2_TN
+86,Corylus_avellana,rough_b,Another multi stemmed hazel so I am using the 2 quadrat system on the 2 largest stems,RA2_TW,RA2,35.5,tw,14.85,RA2_TW
+87,Acer_pseudoplatanus,rough_b,,RA2_TS,RA2,187,ts,18.18,RA2_TS
+88,Fraxinus_excelsior,smooth_b,Barely living ash.,RA2_TE,RA2,54,te,10.03,RA2_TE
+89,Betula_sp,rough_b,"Very old, covered in boroughs.",RA3_TN,RA3,87,tn,14.84,RA3_TN
+90,Quercus_sp,rough_b,Excluded a Scots pine.,RA3_TE,RA3,103,te,7.53,RA3_TE
+91,Quercus_sp,rough_b,,RA3_TS,RA3,120,ts,16.7,RA3_TS
+92,Betula_sp,rough_b,,RA3_TW,RA3,45,tw,2.33,RA3_TW
+93,Alnus_glutinosa,inter_b,Splits into 2 main stems.,LAE2_TN,LAE2,78,tn,8.49,LAE2_TN
+94,Corylus_avellana,inter_b,Hazel with multi stems. Using double quad system on largest.,LAE2_TW,LAE2,13.15,tw,25,LAE2_TW
+95,Quercus_sp,rough_b,A gigantic ancient sessile oak. ,LAE2_TE,LAE2,3.75,te,23.28,LAE2_TE
+96,Alnus_glutinosa,smooth_b,"A very old Alder with the center stem destroyed. Many child stems sprouting from it, regenerating. The thickest accessible of these stems is over 40cm so I am using the single quad.",LAE2_TS,LAE2,42,ts,1.5,LAE2_TS
+97,Alnus_glutinosa,inter_b,Another alder with a gagillion stems. The widest (by a margin) is inaccessible so I am surveying the second largest stem.,LAE3_TN,LAE3,51,tn,11.14,LAE3_TN
+98,Corylus_avellana,smooth_b,"Hazel, thickest stem has cir of 32 so I'll have to do double quad.",LAE3_TW,LAE3,32,tw,8.1,LAE3_TW
+99,Corylus_avellana,inter_b,Interesting hazel. Tall but not out. A few small side stems but realistically one central stem.,LAE3_TE,LAE3,46,te,21.53,LAE3_TE
+100,Betula_sp,inter_b,Just on the cusp of acceptable circumference.,LAE3_TS,LAE3,41,ts,3.08,LAE3_TS
+101,Alnus_glutinosa,inter_b,"Massive stem broken off, 2 smaller stems. Surveying the thicker of the two.",LAE4_TN,LAE4,56,tn,21.82,LAE4_TN
+102,Alnus_glutinosa,rough_b,"A tough one, lots of little stems around the base making it hard to access.",LAE4_TW,LAE4,180,tw,14.21,LAE4_TW
+103,Alnus_glutinosa,rough_b,,LAE4_TS,LAE4,289,ts,16.16,LAE4_TS
+104,Fraxinus_excelsior,rough_b,"A mighty, magnificent ash.",LAE4_TE,LAE4,373,te,30,LAE4_TE
+105,Corylus_avellana,inter_b,The exact circ of the thickest stem is 40cm so I'm good to use the single quad.,LAE5_TN,LAE5,40,tn,3.86,LAE5_TN
+106,Crataegus_monogyna,rough_b,A hazel stem is growing almost on top of it .,LAE5_TW,LAE5,69,tw,13.23,LAE5_TW
+107,Corylus_avellana,smooth_b,Have to do 2 quad method. Got N and S mixed up,LAE5_TE,LAE5,34,te,15.85,LAE5_TE
+108,Corylus_avellana,rough_b,Huge hazel. Widest accessible stem is wide enough for single quad.,LAE5_TS,LAE5,47,ts,7.45,LAE5_TS
+109,Quercus_sp,rough_b,Closest tree but basically due West. Long dead fallen branch hanging in it.,ARI1_TN,ARI1,2.51,tn,5.12,ARI1_TN
+110,Quercus_sp,rough_b,"The branch of a fallen oak, now become a stem.",ARI1_TW,ARI1,41.5,tw,16.14,ARI1_TW
+111,Quercus_sp,rough_b,,ARI1_TS,ARI1,144,ts,6.53,ARI1_TS
+112,Quercus_sp,rough_b,,ARI1_TE,ARI1,182,te,11.72,ARI1_TE
+113,Quercus_sp,rough_b,,ARI2_TN,ARI2,156,tn,15.13,ARI2_TN
+114,Quercus_sp,inter_b,Had to reject a dead oak.,ARI2_TW,ARI2,108,tw,11.91,ARI2_TW
+115,Quercus_sp,inter_b,,ARI2_TS,ARI2,130,ts,8.76,ARI2_TS
+116,Quercus_sp,rough_b,,ARI2_TE,ARI2,230,te,21.25,ARI2_TE
+117,Quercus_sp,rough_b,,ARI3_TN,ARI3,144,tn,18.67,ARI3_TN
+118,Quercus_sp,rough_b,,ARI3_TW,ARI3,124,tw,21.33,ARI3_TW
+119,Quercus_sp,rough_b,,ARI3_TS,ARI3,98,ts,5.4,ARI3_TS
+120,Quercus_sp,rough_b,,ARI3_TE,ARI3,144,te,23.75,ARI3_TE
+121,Quercus_sp,rough_b,,ARI4_TN,ARI4,35,tn,3.44,ARI4_TN
+122,Quercus_sp,rough_b,,ARI4_TE,ARI4,54,te,18,ARI4_TE
+123,Quercus_sp,rough_b,,ARI4_TW,ARI4,110,tw,17.16,ARI4_TW
+124,Quercus_sp,inter_b,,ARI4_TS,ARI4,145,ts,12,ARI4_TS
+125,Corylus_avellana,inter_b,Dual quad method.,INN1_TN,INN1,22,tn,3.88,INN1_TN
+126,Betula_sp,rough_b,,INN1_TW,INN1,64,tw,16.4,INN1_TW
+127,Betula_sp,inter_b, ,INN1_TS,INN1,40,ts,3.79,INN1_TS
+128,Corylus_avellana,inter_b,Multi quad.,INN1_TE,INN1,21,te,2.97,INN1_TE
+129,Corylus_avellana,smooth_b,Dual quad.,INN2_TN,INN2,31,tn,5.39,INN2_TN
+130,Alnus_glutinosa,rough_b,Splits into 3 stems. Surveying closest.,INN2_TW,INN2,80,tw,11.28,INN2_TW
+131,Alnus_glutinosa,rough_b,Multi stem. Surveying closest ,INN2_TS,INN2,74,ts,12.3,INN2_TS
+132,Betula_sp,inter_b,,INN2_TE,INN2,109,te,14,INN2_TE
+133,Quercus_sp,rough_b,,ARI5_TN,ARI5,168,tn,9.02,ARI5_TN
+134,Ulmus_sp,rough_b,,ARI5_TW,ARI5,133,tw,15.1,ARI5_TW
+135,Quercus_sp,rough_b,,ARI5_TS,ARI5,191,ts,13.37,ARI5_TS
+136,Quercus_sp,rough_b,,ARI5_TE,ARI5,153,te,30,ARI5_TE
+137,Quercus_sp,inter_b,,ARI6_TN,ARI6,131,tn,18.54,ARI6_TN
+138,Quercus_sp,inter_b,Alive but very unwell. ,ARI6_TW,ARI6,138,tw,1.67,ARI6_TW
+139,Quercus_sp,inter_b,Exposed to waterfront.,ARI6_TS,ARI6,151,ts,13.3,ARI6_TS
+140,Fraxinus_excelsior,rough_b,,ARI6_TE,ARI6,101,te,5.43,ARI6_TE
+141,Quercus_sp,rough_b,,ARI7_TN,ARI7,92.5,tn,6.13,ARI7_TN
+142,Quercus_sp,rough_b,Heavily angled. N is down S is up.,ARI7_TW,ARI7,79,tw,9.68,ARI7_TW
+143,Quercus_sp,rough_b,,ARI7_TS,ARI7,132,ts,2.16,ARI7_TS
+144,Quercus_sp,rough_b,,ARI7_TE,ARI7,171,te,16.55,ARI7_TE
+145,Quercus_sp,inter_b,Quite old. Lost some bark on south side.,ARI8_TN,ARI8,149,tn,7.5,ARI8_TN
+146,Quercus_sp,inter_b,,ARI8_TW,ARI8,201,tw,9.87,ARI8_TW
+147,Quercus_sp,rough_b,2 large stems. Surveying one closer to S18,ARI8_TS,ARI8,210,ts,23.25,ARI8_TS
+148,Fraxinus_excelsior,rough_b,,ARI8_TE,ARI8,288,te,7.13,ARI8_TE
+149,Betula_sp,inter_b,,RR2_TN,RR2,41,tn,6.1,RR2_TN
+150,Quercus_sp,rough_b,,RR2_TW,RR2,138.5,tw,12.13,RR2_TW
+151,Quercus_sp,inter_b,Had to reject a tree for safety reasons because it was on a cliffside,RR2_TS,RR2,55.5,ts,11.44,RR2_TS
+152,Betula_sp,rough_b,,RR2_TE,RR2,45,te,10.82,RR2_TE
+153,Quercus_sp,rough_b,,RR3_TN,RR3,153,tn,10.98,RR3_TN
+154,Quercus_sp,rough_b,No trees close 2m West so this is mostly south.,RR3_TW,RR3,155,tw,1.78,RR3_TW
+155,Quercus_sp,rough_b,,RR3_TE,RR3,1.86,te,22.74,RR3_TE
+156,Quercus_sp,rough_b,,RR3_TS,RR3,122,ts,7.98,RR3_TS

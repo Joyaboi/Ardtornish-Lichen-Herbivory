@@ -1,0 +1,37 @@
+fid,site_id,date,WHIA,notes,canopy_check,random_distance,avg_canopy_openness,lichen_id_ynm
+8,LAE1,2026/05/12 13:56:25.160+00,high_impact,Coastal beech stand between beach and road,1,N14 | E21 | S21 | W18,67.9,yes
+10,LAN1,2026/05/14 11:30:58.213+00,medium_impact,"Old established birch wood with many young oaks. I changed the name, please update tree and quadrat names. Additionally it was named OK1 so all of the photos have OK1 on them please know this is actually BC2",1,N14 | E12 | S12 | W1,21.6995,yes
+11,LAW1,2026/05/14 15:06:34.703+00,low_impact,Very wet site with lots of old sycamore and alder. Many young hazel as well. On a hill running N to S,1,N15 | E6 | S16 | W8,59.1355,no
+12,LAN2,2026/05/15 11:31:39.685+00,low_impact,Between River Aline and road. Lots of oak and young Rowan/birch,1,N16 | E17 | S3 | W16,55.74,no
+13,LAN3,2026/05/15 14:14:20.937+00,high_impact,Old forest. Lots of bluebells and bracken. Canopy is mainly oak,1,N17 | E12 | S11 | W1,34.73375,no
+14,RR1,2026/05/15 16:31:43.205+00,high_impact,Very disturbed between road and quarry. Lots of young birch and a few old oak.,1,N19 | E10 | S20 | W8,87.011,yes
+15,BG1,2026/05/17 14:39:17.010+00,medium_impact,Very open site with some old oaks and birch and a lot of young birch. I was quite stick between low and medium herb. Retook canopy photos when doing TS because of cloud cover,1,N1 | E11 | S20 | W9,86.1405,no
+16,BG2,2026/05/17 16:42:26.503+00,low_impact,"Very well protected, beautiful patch of wood with a highly developed understory",1,N8 | E12 | S17 | W5,53.82575,yes
+17,BG3,2026/05/17 18:29:36.731+00,low_impact,Another touch choice between med and low herb. Lots of untouched young rowan saplings. Healthy amount of blaeberry,1,N12 | E12 | S16 | W5,47.4005,yes
+18,BG4,2026/05/17 20:10:29.022+00,medium_impact,Close to parking lot for Black Gorge. Lots of LP just from a quick glance,1,N19 | E15 | S17 | W11,59.70075,no
+19,BG5,2026/05/18 12:59:15.818+00,high_impact,Outside of fence. Similar to other side just heavily grazed.,1,N6 | E3 | S2 | W4,68.608,no
+20,BG6,2026/05/18 14:33:15.902+00,high_impact,Near a dry vernal pool,1,N7 | E18 | S10 | W14,54.64225,no
+21,AGG1,2026/05/20 13:40:08.840+00,high_impact,"On North Bank of AGG. Centroid is on a hillside running north to south. Road is north, river is south",1,N8 | E8 | S20 | W14,42.7345,no
+22,AGG2,2026/05/20 16:01:28.561+00,high_impact,"Patch near northeast edge of continuous woods that follow AGG. On South bank, as are AGG2-5",1,N13 | E6 | S5 | W8,46.28675,no
+23,AGG3,2026/05/20 18:01:05.225+00,high_impact,Northeast edge of continuous woods that follow AGG. Centroid beside a stream,1,N15 | E9 | S7 | W1,38.948,yes
+24,AGG4,2026/05/20 19:28:16.935+00,high_impact,In between 2 young birch stands,1,N20 | E17 | S19 | W13,42.11675,yes
+25,AGG5,2026/05/20 20:43:34.291+00,high_impact,"Flat, near another vernal pool",1,N8 | E1 | S2 | W5,63.60475,yes
+26,RA1,2026/05/23 11:12:57.398+00,low_impact,"Beautiful patch of woodland. Very diverse. Ground very soggy, lots of midges.",1,N15 | E20 | S5 | W9,10.36525,yes
+27,RA2,2026/05/23 12:59:07.249+00,medium_impact,"An interesting patch on a hillside between two burns, a hill, and a field.",1,N18 | E11 | S16 | W17,5.521,no
+28,RA3,2026/05/23 15:29:36.512+00,medium_impact,"On the cusp of medium or high. Lots of dead wood, likely hit by a storm. Evidence of recent herbivory (scat).",1,N10 | E6 | S16 | W3,52.5855,no
+29,LAE2,2026/05/25 12:12:08.114+00,medium_impact,"Very wet, saturated ground. Recently grazed but not too intensely.",1,N8 | E16 | S3 | W15,12.009,yes
+30,LAE3,2026/05/25 14:14:51.978+00,medium_impact,Near a burn. Lots of old hazel.,1,N12 | E20 | S5 | W8,5.00025,no
+31,LAE4,2026/05/25 17:22:34.100+00,medium_impact,"Very wet, almost marshy. Lots of Alder.",1,N16 | E11 | S7 | W18,54.52925,no
+32,LAE5,2026/05/25 20:11:45.457+00,medium_impact,"Lots of old hazel. Understory is fern and blue bell, some bramble. Evidence of moderate herbivory. On the edge of moderate/low. Midges.",1,N3 | E13 | S3 | W13,7.3065,yes
+33,ARI1,2026/05/26 15:35:21.411+00,low_impact,Lots of dead snags around.,1,N4 | E15 | S1 | W18,27.62525,yes
+34,ARI2,2026/05/26 17:23:43.540+00,low_impact,Lots of oak. Plenty of untouched saplings. On a hill running north to south.,1,N13 | E16 | S6 | W15,22.14175,no
+35,ARI3,2026/05/26 18:57:46.289+00,medium_impact,Relatively open area on a hillside running N to S. Obvious evidence of herbivory but not intense.,1,N13 | E20 | S6 | W18,19.40825,in_progress
+36,ARI4,2026/05/26 20:26:27.799+00,high_impact,Quite elevated. ,1,N17 | E17 | S17 | W18,20.692,no
+37,INN1,2026/05/27 16:56:21.478+00,high_impact,On a steep slope running N to S. Obvious evidence of herbivory. I hear sheep beating.,1,N5 | E1 | S3 | W18,3.88775,in_progress
+38,INN2,2026/05/27 18:37:48.982+00,medium_impact,"On the cusp of M and H, could be high.",1,N3 | E13 | S9 | W13,5.5085,yes
+40,ARI5,2026/05/28 15:26:04.208+00,low_impact,"On a N to S slope like the rest of ARI. Lots of bramble, quite tall. ",1,N10 | E6 | S13 | W15,18.31975,no
+41,ARI6,2026/05/28 17:03:31.002+00,low_impact,Very close to the coast and next to a burn. Tall bramble.,1,N16 | E12 | S19 | W2,20.6165,yes
+42,ARI7,2026/05/28 18:19:42.007+00,low_impact,"Lots of bramble around. Some tall. Very little evidence of herbivory, could be M but I'm leainging L. Also I took the 360 hemi photos after TN",1,N5 | E14 | S6 | W9,9.502,no
+43,ARI8,2026/05/28 19:41:58.992+00,medium_impact,Old scraggly oak stand on the edge of ARI wood. Surrounded by abundant bog myrtle demonstrating moderate levels of her ivory. Same with lower palatable leaves.,1,N3 | E14 | S18 | W5,46.32775,yes
+57,RR2,2026/06/24 13:20:53.065+00,low_impact,,1,N8 | E11 | S20 | W13,20.902,in_progress
+58,RR3,2026/06/24 14:41:53.673+00,low_impact,Final survey :(,1,N12 | E15 | S9 | W2,24.82875,no
