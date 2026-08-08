@@ -1,22 +1,19 @@
-#02_richness_models.R
-
+#02_species_richness.R
 
 ####Packages####
-
 
 library(dplyr)
 library(tidyr)
 library(lme4)
 
-
-####Load and Process Data####
-
+####Load Data####
 
 #Load processed dataset
 lichen_data <- read.csv("data/processed/lichen_data.csv")
 
-#Create presence/absence table with tree-level covariates
+#####Create Presence/Absence Table#####
 
+#Create presence/absence table with tree-level covariates
 species_pa <- lichen_data %>%
   distinct(tree_id, lichen_species) %>%
   mutate(presabs = 1) %>%
@@ -43,8 +40,7 @@ species_pa <- lichen_data %>%
     canopy_scaled = as.numeric(scale(avg_canopy_openness))
   )
 
-
-####Richness Models####
+####Species Richness Models####
 
 
 #Does WHIA influence the probability that a given lichen species occurs on a tree?
@@ -61,7 +57,6 @@ m_rich <- glmer(
 summary(m_rich)
 
 #WHIA + Confounders model
-
 m_rich_cov <- glmer(
   presabs ~ WHIA +
     tree_species +
@@ -74,6 +69,12 @@ m_rich_cov <- glmer(
   family = binomial
 )
 
-#Compare models
+#####Compare Models#####
+
 AIC(m_rich, m_rich_cov)
-anova(m_rich, m_rich_cov, test = "Chisq")
+
+anova(
+  m_rich,
+  m_rich_cov,
+  test = "Chisq"
+)

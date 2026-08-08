@@ -1,13 +1,12 @@
-# 01_data_preparation.R
+#01_data_preparation.R
 
 ####Packages####
+
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 
-
 ####Open & Process Data####
-
 
 #####Open and Check CSV's#####
 
@@ -32,7 +31,10 @@ head(tree_coords)
 #####Clean Lichen Data#####
 
 lichens <- lichens %>%
-  rename(functional_group = morphotypes)
+  rename(functional_group = morphotypes) %>%
+  select(
+    -any_of(c("morphotype", "photobiont"))
+  )
 
 lichens <- lichens %>%
   separate(
@@ -90,12 +92,10 @@ head(lichen_data)
 #####Process Variables#####
 
 #Convert cbh to dbh
-
 lichen_data <- lichen_data %>%
   mutate(dbh_cm = cbh_cm / pi)
 
-#Make DBH and Canopy continuous 
-
+#Make DBH and Canopy continuous
 lichen_data <- lichen_data %>%
   mutate(
     dbh_scaled = as.numeric(scale(dbh_cm)),
@@ -115,11 +115,9 @@ lichen_data <- lichen_data %>%
     )
   )
 
-
 ####Check Datasets####
 
-
-#make sure table join worked 
+#Make sure table join worked
 sum(is.na(lichen_data$tree_id))
 sum(is.na(lichen_data$site_id))
 sum(is.na(lichen_data$tree_species))
@@ -127,8 +125,8 @@ sum(is.na(lichen_data$WHIA))
 
 #All should return zero
 
-#####check for missing data #####
-colSums(is.na(lichen_data))
+#####Check for Missing Data#####
+
 
 #Number of quadrats per tree
 tree_quadrat_check <- lichen_data %>%
@@ -138,9 +136,9 @@ tree_quadrat_check <- lichen_data %>%
 
 tree_quadrat_check
 
-#INN2_TW_qN has no lichens so that's okay
+#INN2_TW_QN has no lichens so that's okay
 
-#number of trees per site
+#Number of trees per site
 site_tree_check <- lichen_data %>%
   distinct(site_id, tree_id) %>%
   count(site_id, name = "n_trees") %>%
@@ -165,12 +163,12 @@ ggplot(tree_WHIA, aes(WHIA, n)) +
 
 #Each category should have 20 trees each
 
-#####quadrats without lichens#####
+#####Quadrats Without Lichens#####
 
-trees <- lichen_data %>%
+tree_list <- lichen_data %>%
   distinct(site_id, tree_id)
 
-expected_quadrats <- trees %>%
+expected_quadrats <- tree_list %>%
   tidyr::expand_grid(
     quadrat_position = c("QE", "QW", "QS", "QN")
   ) %>%
@@ -186,9 +184,7 @@ missing_quadrats
 
 #Again, INN2_TW_QN just didn't have any lichens so that's alright
 
-
 ####Save Processed Dataset####
-
 
 write.csv(
   lichen_data,
