@@ -1644,7 +1644,7 @@ figure_A1 <- ggplot(
     }
   ) +
   labs(
-    x = "Diamater at breast height (cm)",
+    x = "Diameter at breast height (cm)",
     y = "Lichen species richness",
     colour = "Host tree species"
   ) +
