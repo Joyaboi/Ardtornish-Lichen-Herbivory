@@ -11,6 +11,16 @@ library(tidyr)
 library(ggeffects)
 
 
+####Save Figures: On or OFF####
+
+
+save_figures <- TRUE
+
+#True = Figures will save
+
+#False = Figures will not save
+
+
 ####Helper Functions####
 
 
@@ -57,14 +67,6 @@ pretty_tree_species <- function(x) {
     }
   })
 }
-
-####Save Figures: On or OFF####
-
-save_figures <- FALSE
-
-#True = Figures will save
-
-#False = Figures will not save
 
 
 ####Figures 2a & 2b: Lichen species obs frequency####
@@ -295,6 +297,7 @@ ggsave(
 )
 }
 
+
 ####Figures 3a & 3b: Richness####
 
 
@@ -494,6 +497,7 @@ ggsave(
 
 
 ####Figures 4a, 4b, and 4c: Community Composition####
+
 
 #####4a: Photobiont Groups#####
 
@@ -771,6 +775,7 @@ ggsave(
 )
 }
 
+
 ####Figures 5a & 5b: Species Community NMDS####
 
 
@@ -974,6 +979,7 @@ ggsave(
 
 
 ####Figures 6a, 6b, and 6c: Dissimilarity####
+
 
 #####6a: Site Dissimilarity#####
 
@@ -1291,7 +1297,9 @@ ggsave(
 )
 }
 
-####Figure 7: Species Level Response to WHIA####
+
+####Figure7: Species Level Response to WHIA####
+
 
 # Model:
 
@@ -1402,7 +1410,9 @@ ggsave(
 )
 }
 
+
 ####Figure 8: Functional NMDS####
+
 
 set.seed(123)
 
@@ -1545,4 +1555,113 @@ ggsave(
   units = "cm",
   dpi = 600
 )
+}
+
+
+####Figure A1: Tree Size & Lichen Richness####
+
+
+#####Create Tree Richness Dataset#####
+
+tree_richness <- lichen_data %>%
+  group_by(tree_id) %>%
+  summarise(
+    richness = n_distinct(lichen_species),
+    site_id = first(site_id),
+    WHIA = first(WHIA),
+    tree_species = first(tree_species),
+    dbh_scaled = first(dbh_scaled),
+    bark_roughness_class = first(bark_roughness_class),
+    canopy_scaled = first(canopy_scaled),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    WHIA = factor(
+      WHIA,
+      levels = c(
+        "low_impact",
+        "medium_impact",
+        "high_impact"
+      )
+    )
+  )
+
+#####Create Pretty Tree Species Names#####
+
+pretty_tree_species <- function(x) {
+  sapply(x, function(i) {
+    parts <- strsplit(i, "_")[[1]]
+    
+    if(length(parts) >= 2){
+      paste(
+        tools::toTitleCase(parts[1]),
+        tolower(parts[2])
+      )
+    } else {
+      tools::toTitleCase(gsub("_", " ", i))
+    }
+  })
+}
+
+pretty_tree_species_labels <- function(x) {
+  paste0(
+    "italic('",
+    pretty_tree_species(x),
+    "')"
+  )
+}
+
+#####Create Tree Species Colours#####
+
+tree_species_cols <- scales::hue_pal()(
+  length(unique(tree_richness$tree_species))
+)
+
+names(tree_species_cols) <- unique(tree_richness$tree_species)
+
+#####Plot Figure A1
+
+figure_A1 <- ggplot(
+  tree_richness,
+  aes(
+    x = dbh_scaled,
+    y = richness,
+    colour = tree_species
+  )
+) +
+  geom_point(
+    size = 3,
+    alpha = 0.85
+  ) +
+  geom_smooth(
+    aes(group = 1),
+    method = "loess",
+    se = TRUE,
+    colour = "black",
+    linewidth = 0.8
+  ) +
+  scale_colour_manual(
+    values = tree_species_cols,
+    labels = function(x) {
+      parse(text = pretty_tree_species_labels(x))
+    }
+  ) +
+  labs(
+    x = "Diamater at breast height (cm)",
+    y = "Lichen species richness",
+    colour = "Host tree species"
+  ) +
+  theme_classic(base_size = 14)
+
+figure_A1
+
+if (save_figures) {
+  ggsave(
+    filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_A1.png",
+    plot = figure_A1,
+    width = 24.6,
+    height = 14.5,
+    units = "cm",
+    dpi = 600
+  )
 }

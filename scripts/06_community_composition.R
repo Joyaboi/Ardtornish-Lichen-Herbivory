@@ -1,6 +1,8 @@
 #06_community_composition.R
 
+
 ####Packages####
+
 
 library(vegan)
 library(dplyr)
@@ -8,7 +10,9 @@ library(tidyr)
 library(ggplot2)
 library(tibble)
 
+
 ####Species Community Composition####
+
 
 #####Create Tree x Species Matrix#####
 
@@ -38,7 +42,9 @@ nmds_species <- metaMDS(
 
 nmds_species$stress
 
+
 ####Functional Community Composition####
+
 
 #####Create Tree x Functional Group Matrix#####
 

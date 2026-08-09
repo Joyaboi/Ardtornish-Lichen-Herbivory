@@ -1,12 +1,16 @@
 #01_data_preparation.R
 
+
 ####Packages####
+
 
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 
+
 ####Open & Process Data####
+
 
 #####Open and Check CSV's#####
 
@@ -115,7 +119,9 @@ lichen_data <- lichen_data %>%
     )
   )
 
+
 ####Check Datasets####
+
 
 #Make sure table join worked
 sum(is.na(lichen_data$tree_id))
@@ -126,7 +132,6 @@ sum(is.na(lichen_data$WHIA))
 #All should return zero
 
 #####Check for Missing Data#####
-
 
 #Number of quadrats per tree
 tree_quadrat_check <- lichen_data %>%
@@ -184,7 +189,9 @@ missing_quadrats
 
 #Again, INN2_TW_QN just didn't have any lichens so that's alright
 
+
 ####Save Processed Dataset####
+
 
 write.csv(
   lichen_data,

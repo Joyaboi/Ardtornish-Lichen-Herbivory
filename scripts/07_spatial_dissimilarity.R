@@ -1,13 +1,17 @@
 #07_spatial_dissimilarity.R
 
+
 ####Packages####
+
 
 library(dplyr)
 library(tidyr)
 library(tibble)
 library(vegan)
 
+
 ####Site Dissimilarity####
+
 
 #####Create Site x Species Matrix#####
 
@@ -70,7 +74,9 @@ mantel(
   permutations = 999
 )
 
+
 ####Tree Dissimilarity####
+
 
 #####Create Tree x Species Matrix#####
 

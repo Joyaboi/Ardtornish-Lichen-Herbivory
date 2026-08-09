@@ -1,12 +1,16 @@
 #02_species_richness.R
 
+
 ####Packages####
+
 
 library(dplyr)
 library(tidyr)
 library(lme4)
 
+
 ####Load Data####
+
 
 #Load processed dataset
 lichen_data <- read.csv("data/processed/lichen_data.csv")
@@ -39,6 +43,7 @@ species_pa <- lichen_data %>%
     dbh_scaled = as.numeric(scale(dbh_cm)),
     canopy_scaled = as.numeric(scale(avg_canopy_openness))
   )
+
 
 ####Species Richness Models####
 

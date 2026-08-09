@@ -1,11 +1,15 @@
 #10_tables.R
 
+
 ####Packages####
+
 
 library(dplyr)
 library(tidyr)
 
+
 ####Table T1: Summary of Sampling Effort, Analytical Sampling Structure, and Lichen Dataset Composition####
+
 
 #Calculate analytical sampling metrics
 
@@ -110,7 +114,9 @@ table_T1 <- tibble(
 
 table_T1
 
+
 ####Table T3: Fixed-Effect Estimates from the Functional Group Occurrence Model####
+
 
 #Extract fixed effects
 
@@ -146,7 +152,9 @@ table_T3 <- summary(m_func_rich)$coefficients %>%
 
 table_T3
 
+
 ####Table T4: Fixed-Effect Estimates from the Hierarchical Species Occurrence Model####
+
 
 #Extract fixed effects
 
@@ -182,7 +190,9 @@ table_T4 <- summary(m_rich)$coefficients %>%
 
 table_T4
 
+
 ####Table T5: Hierarchical Model Comparisons####
+
 
 #Compare occurrence model with reduced turnover model
 
@@ -241,7 +251,9 @@ table_T5 <- tibble(
 
 table_T5
 
+
 ####Table T6: Hierarchical Model Comparisons####
+
 
 #Compare occurrence model with reduced turnover model
 
@@ -299,3 +311,260 @@ table_T6 <- tibble(
   )
 
 table_T6
+
+
+####Table A1: Species Richness Model Estimates####
+
+
+#Random-effect variance components
+richness_random <- as.data.frame(
+  VarCorr(m_rich)
+) %>%
+  transmute(
+    `Model component` = grp,
+    Variance = sprintf("%.3f", vcov),
+    SD = sprintf("%.3f", sdcor)
+  )
+
+richness_random
+
+#Model fit statistics
+richness_fit <- tibble(
+  `Model statistic` = c(
+    "Observations",
+    "AIC",
+    "BIC",
+    "Log-likelihood"
+  ),
+  Value = c(
+    nobs(m_rich),
+    sprintf("%.2f", AIC(m_rich)),
+    sprintf("%.2f", BIC(m_rich)),
+    sprintf("%.2f", logLik(m_rich))
+  )
+)
+
+richness_fit
+
+
+####Table A2: Species Turnover Model Estimates####
+
+
+#Random-effect variance components
+turnover_random <- as.data.frame(
+  VarCorr(m_turnover1)
+) %>%
+  transmute(
+    `Model component` = grp,
+    Variance = sprintf("%.3f", vcov),
+    SD = sprintf("%.3f", sdcor)
+  )
+
+turnover_random
+
+#Model fit statistics
+turnover_fit <- tibble(
+  `Model statistic` = c(
+    "Observations",
+    "AIC",
+    "BIC",
+    "Log-likelihood"
+  ),
+  Value = c(
+    nobs(m_turnover1),
+    sprintf("%.2f", AIC(m_turnover1)),
+    sprintf("%.2f", BIC(m_turnover1)),
+    sprintf("%.2f", logLik(m_turnover1))
+  )
+)
+
+turnover_fit
+
+
+####Table A3: Functional-Group Model Estimates####
+
+
+#Random-effect variance components
+func_turnover_random <- as.data.frame(
+  VarCorr(m_func_turnover1)
+) %>%
+  transmute(
+    `Model component` = grp,
+    Variance = sprintf("%.3f", vcov),
+    SD = sprintf("%.3f", sdcor)
+  )
+
+func_turnover_random
+
+#Model fit statistics
+func_turnover_fit <- tibble(
+  `Model statistic` = c(
+    "Observations",
+    "AIC",
+    "BIC",
+    "Log-likelihood"
+  ),
+  Value = c(
+    nobs(m_func_turnover1),
+    sprintf("%.2f", AIC(m_func_turnover1)),
+    sprintf("%.2f", BIC(m_func_turnover1)),
+    sprintf("%.2f", logLik(m_func_turnover1))
+  )
+)
+
+func_turnover_fit
+
+
+####Table A4. Alternative Models Incorporating Tree-Level Covariates ####
+
+
+#Compare species richness models
+richness_cov_test <- anova(
+  m_rich,
+  m_rich_cov,
+  test = "Chisq"
+)
+
+#Compare species turnover models
+turnover_cov_test <- anova(
+  m_turnover1,
+  m_turnover_cov,
+  test = "Chisq"
+)
+
+#Compare functional group turnover models
+func_turnover_cov_test <- anova(
+  m_func_turnover1,
+  m_func_turnover_cov,
+  test = "Chisq"
+)
+
+#Extract values
+
+A4_delta_AIC <- c(
+  AIC(m_rich_cov) - AIC(m_rich),
+  AIC(m_turnover_cov) - AIC(m_turnover1),
+  AIC(m_func_turnover_cov) - AIC(m_func_turnover1)
+)
+
+A4_chisq <- c(
+  richness_cov_test$Chisq[2],
+  turnover_cov_test$Chisq[2],
+  func_turnover_cov_test$Chisq[2]
+)
+
+A4_df <- c(
+  richness_cov_test$Df[2],
+  turnover_cov_test$Df[2],
+  func_turnover_cov_test$Df[2]
+)
+
+A4_p <- c(
+  richness_cov_test$`Pr(>Chisq)`[2],
+  turnover_cov_test$`Pr(>Chisq)`[2],
+  func_turnover_cov_test$`Pr(>Chisq)`[2]
+)
+
+#Create Table A4
+
+table_A4 <- tibble(
+  `Model comparison` = c(
+    "Species richness + covariates vs. species richness",
+    "Species turnover + covariates vs. species turnover",
+    "Functional group turnover + covariates vs. functional group turnover"
+  ),
+  `ΔAIC` = sprintf("%.2f", A4_delta_AIC),
+  `χ²` = sprintf("%.2f", A4_chisq),
+  df = as.integer(A4_df),
+  p = ifelse(
+    A4_p < 0.001,
+    "<0.001",
+    sprintf("%.3f", A4_p)
+  )
+)
+
+table_A4
+
+
+####Table A5. NMDS/PERMANOVA Statistics ####
+
+
+#Extract PERMANOVA results
+
+set.seed(123)
+
+species_permanova <- adonis2(
+  species_comm ~ WHIA,
+  data = scores_species,
+  method = "jaccard",
+  permutations = 999
+)
+
+set.seed(123)
+
+morph_permanova <- adonis2(
+  morph_comm ~ WHIA,
+  data = scores_morph,
+  method = "jaccard",
+  permutations = 999
+)
+
+#Extract PERMDISP results
+
+set.seed(123)
+
+species_permdisp <- permutest(
+  species_dispersion,
+  permutations = 999
+)
+
+set.seed(123)
+
+morph_permdisp <- permutest(
+  morph_dispersion,
+  permutations = 999
+)
+
+#Create Table A5
+table_A5 <- tibble(
+  Statistic = c(
+    "NMDS stress",
+    "PERMANOVA pseudo-F",
+    "R²",
+    "PERMANOVA p",
+    "PERMDISP pseudo-F",
+    "PERMDISP p"
+  ),
+  `Lichen species` = c(
+    nmds_species$stress,
+    species_permanova$F[1],
+    species_permanova$R2[1],
+    species_permanova$`Pr(>F)`[1],
+    species_permdisp$tab$F[1],
+    species_permdisp$tab$`Pr(>F)`[1]
+  ),
+  `Functional groups` = c(
+    nmds_morph$stress,
+    morph_permanova$F[1],
+    morph_permanova$R2[1],
+    morph_permanova$`Pr(>F)`[1],
+    morph_permdisp$tab$F[1],
+    morph_permdisp$tab$`Pr(>F)`[1]
+  )
+) %>%
+  mutate(
+    `Lichen species` = ifelse(
+      Statistic %in% c("PERMANOVA p", "PERMDISP p") &
+        `Lichen species` < 0.001,
+      "<0.001",
+      sprintf("%.3f", `Lichen species`)
+    ),
+    `Functional groups` = ifelse(
+      Statistic %in% c("PERMANOVA p", "PERMDISP p") &
+        `Functional groups` < 0.001,
+      "<0.001",
+      sprintf("%.3f", `Functional groups`)
+    )
+  )
+
+table_A5

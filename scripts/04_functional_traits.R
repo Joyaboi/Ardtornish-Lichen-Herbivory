@@ -1,13 +1,17 @@
 #04_functional_traits.R
 
+
 ####Packages####
+
 
 library(dplyr)
 library(tidyr)
 library(lme4)
 library(ggeffects)
 
+
 ####Hadfield Functional Turnover####
+
 
 #####Make a tree x Functional matrix#####
 

@@ -1,13 +1,17 @@
 #05_abundance_analysis.R
 
+
 ####Packages####
+
 
 library(dplyr)
 library(tidyr)
 library(tibble)
 library(vegan)
 
+
 ####Create Abundance Matrices####
+
 
 #####Tree x Species Abundance Matrix#####
 
@@ -63,7 +67,9 @@ site_abundance_matrix <- site_species_abundance %>%
 site_comm <- site_abundance_matrix %>%
   column_to_rownames("site_id")
 
+
 ####Site-level Abundance Analysis####
+
 
 site_metadata <- lichen_data %>%
   distinct(site_id, WHIA)

@@ -1,19 +1,15 @@
 #08_exploratory_analysis.R
 
+
 ####Packages####
+
 
 library(dplyr)
 library(tidyr)
 
-####Save Figures: On or OFF####
-
-save_figures <- FALSE
-
-#True = Figures will save
-
-#False = Figures will not save
 
 ####Specific Morphotype Models####
+
 
 #####Create Photobiont Presence/Absence Matrix#####
 
@@ -66,108 +62,3 @@ morph_pa <- morph_pa %>%
     morphotype,
     presabs
   )
-
-####Tree Size & Lichen Richness####
-
-#####Create Tree Richness Dataset#####
-
-tree_richness <- lichen_data %>%
-  group_by(tree_id) %>%
-  summarise(
-    richness = n_distinct(lichen_species),
-    site_id = first(site_id),
-    WHIA = first(WHIA),
-    tree_species = first(tree_species),
-    dbh_scaled = first(dbh_scaled),
-    bark_roughness_class = first(bark_roughness_class),
-    canopy_scaled = first(canopy_scaled),
-    .groups = "drop"
-  ) %>%
-  mutate(
-    WHIA = factor(
-      WHIA,
-      levels = c(
-        "low_impact",
-        "medium_impact",
-        "high_impact"
-      )
-    )
-  )
-
-#####Create Pretty Tree Species Names#####
-
-pretty_tree_species <- function(x) {
-  sapply(x, function(i) {
-    parts <- strsplit(i, "_")[[1]]
-    
-    if(length(parts) >= 2){
-      paste(
-        tools::toTitleCase(parts[1]),
-        tolower(parts[2])
-      )
-    } else {
-      tools::toTitleCase(gsub("_", " ", i))
-    }
-  })
-}
-
-pretty_tree_species_labels <- function(x) {
-  paste0(
-    "italic('",
-    pretty_tree_species(x),
-    "')"
-  )
-}
-
-#####Create Tree Species Colours#####
-
-tree_species_cols <- scales::hue_pal()(
-  length(unique(tree_richness$tree_species))
-)
-
-names(tree_species_cols) <- unique(tree_richness$tree_species)
-
-figtree <- ggplot(
-  tree_richness,
-  aes(
-    x = dbh_scaled,
-    y = richness,
-    colour = tree_species
-  )
-) +
-  geom_point(
-    size = 3,
-    alpha = 0.85
-  ) +
-  geom_smooth(
-    aes(group = 1),
-    method = "loess",
-    se = TRUE,
-    colour = "black",
-    linewidth = 0.8
-  ) +
-  scale_colour_manual(
-    values = tree_species_cols,
-    labels = function(x) {
-      parse(text = pretty_tree_species_labels(x))
-    }
-  ) +
-  labs(
-    x = "Diamater at breast height (cm)",
-    y = "Lichen species richness",
-    colour = "Host tree species"
-  ) +
-  theme_classic(base_size = 14)
-
-figtree
-
-if (save_figures) {
-  ggsave(
-    filename = "D:/Desktop/UoE/Dissertation/stats_and_figures/Final_Figures/Figtree.png",
-    plot = figure8,
-    width = 24.6,
-    height = 14.5,
-    units = "cm",
-    dpi = 600
-  )
-}
