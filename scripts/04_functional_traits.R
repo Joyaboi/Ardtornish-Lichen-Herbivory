@@ -48,6 +48,17 @@ func_pa <- func_pa %>%
     by = "tree_id"
   )
 
+#####Fix Factor#####
+
+func_pa$WHIA <- factor(
+  func_pa$WHIA,
+  levels = c(
+    "low_impact",
+    "medium_impact",
+    "high_impact"
+  )
+)
+
 #####Functional Richness#####
 
 m_func_rich <- glmer(
