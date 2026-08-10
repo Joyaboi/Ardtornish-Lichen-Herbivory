@@ -11,47 +11,88 @@ No evidence was found that woodland herbivore impact influenced lichen species r
 
 ## Repository structure
 
-Diss_Repo/
-├── README.md
-│
+```text
+Ardtornish-Lichen-Herbivory/
 ├── data/
 │   ├── raw/
+│   │   ├── 15_lichens.csv
+│   │   ├── 15_quadrats.csv
 │   │   ├── 15_sites.csv
 │   │   ├── 15_trees.csv
-│   │   ├── 15_quadrats.csv
-│   │   ├── 15_lichens.csv
 │   │   ├── site_coordinates.csv
 │   │   └── tree_coordinates.csv
 │   │
 │   └── processed/
 │       └── lichen_data.csv
 │
+├── figures/
+│   ├── figure_01.png
+│   ├── figure_02.jpeg
+│   ├── figure_03.jpeg
+│   ├── figure_04.png
+│   ├── figure_05.png
+│   ├── figure_06.png
+│   ├── figure_07.png
+│   ├── figure_08.png
+│   ├── figure_09.png
+│   ├── figure_10.png
+│   ├── figure_11.png
+│   ├── figure_12.png
+│   ├── figure_13.png
+│   └── figure_A1.png
+│
 ├── scripts/
-│   ├── 01_data_preparation.R
+│   ├── 01_data_prep.R
 │   ├── 02_species_richness.R
 │   ├── 03_species_turnover.R
 │   ├── 04_functional_traits.R
-│   ├── 05_nmds.R
-│   ├── 06_figures.R
-│   └── 07_tables.R
+│   ├── 05_community_composition.R
+│   ├── 06_spatial_dissimilarity.R
+│   ├── 07_exploratory_analysis.R
+│   ├── 08_figures.R
+│   └── 09_tables.R
 │
-├── figures/
-│   ├── Figure_1.png
-│   ├── Figure_2.png
-│   ├── Figure_3.png
-│   ├── Figure_4.png
-│   ├── Figure_5.png
-│   ├── Figure_6.png
-│   ├── Figure_7.png
-│   └── Figure_8.png
-│
-└── .gitignore
+├── .gitignore
+├── Diss_Repo.Rproj
+└── README.md
+```
+
+### Directories
+
+- data/raw/ — Raw CSV datasets exported from the field data and spatial data collection workflow.
+- data/processed/ — Processed datasets prepared for statistical analysis.
+- figures/ — Figures generated for the dissertation and supplementary material.
+- scripts/ — Sequential R scripts covering data preparation, statistical analyses, community analyses, figure generation, and table generation.
+
+### Data files
+
+The raw data are separated into datasets describing the 15 analysed woodland sites, sampled trees, quadrats, lichen observations, and associated spatial coordinates. The processed dataset combines the relevant information into a format suitable for subsequent statistical analyses.
+
+### Analysis workflow
+
+The numbered R scripts are intended to document the analytical workflow sequentially:
+
+01_data_prep.R — Data preparation and transformation.
+02_species_richness.R — Analysis of lichen species richness and occurrence.
+03_species_turnover.R — Analysis of species turnover and species-specific responses to WHIA.
+04_functional_traits.R — Analysis of lichen functional traits and functional group turnover.
+05_community_composition.R — Analysis and visualisation of community composition.
+06_spatial_dissimilarity.R — Analysis of spatial patterns in community dissimilarity.
+07_exploratory_analysis.R — Additional exploratory analyses.
+08_figures.R — Generation of dissertation figures.
+09_tables.R — Generation of dissertation tables.
+
+### Other files
+
+- .gitignore — Specifies files excluded from version control.
+- Diss_Repo.Rproj — RStudio project file.
+- README.md — Documentation of the project, analytical workflow, repository structure, and reproducibility information.
 
 ## Software
 
-R
-QGIS
-QField
+- R version 4.5.1
+- QGIS
+- QField
 
 Key R packages include:
 - vegan
@@ -65,3 +106,7 @@ Key R packages include:
 
 Scripts are numbered according to the order in which major processing and
 analytical steps are performed.
+
+##AI Transparency
+
+ChatGPT 5.6 – Luna was used in the creation of this GitHub repository and the code contained within it. Specifically, this AI model assisted with the development of the repository structure and README, as well as portions of the code in scripts/01_data_prep.R, scripts/08_figures.R, and scripts/09_tables.R. AI was used primarily for debugging and troubleshooting, and no AI-generated code was incorporated without manual review and verification.
