@@ -390,8 +390,16 @@ tree_richness <- lichen_data %>%
   )
 
 #Tree colours
-tree_species_cols <- scales::hue_pal()(
-  length(unique(tree_richness$tree_species))
+
+tree_species_cols <- c(
+  "#76C000",  # lime green
+  "#AA00FF",  # purple
+  "#FF6A00",  # orange
+  "#FF1744",  # red
+  "#00C853",  # green
+  "#FFD600",  # gold
+  "#008CFF",   # blue
+  "#E6007A"  # magenta
 )
 
 names(tree_species_cols) <- unique(tree_richness$tree_species)
@@ -403,7 +411,7 @@ fig8a <- ggplot(
   aes(
     x = WHIA,
     y = richness,
-    colour = tree_species
+    fill = tree_species
   )
 ) +
   geom_boxplot(
@@ -414,9 +422,12 @@ fig8a <- ggplot(
     outlier.shape = NA
   ) +
   geom_point(
-    position = position_jitter(width = 0.12),
-    size = 3,
-    alpha = 0.85
+    position = position_jitter(width = 0.15),
+    size = 2.5,
+    alpha = 0.9,
+    shape = 21,
+    colour = "grey20",
+    stroke = 0.75
   ) +
   scale_x_discrete(
     labels = c(
@@ -428,9 +439,9 @@ fig8a <- ggplot(
   labs(
     x = "WHIA category",
     y = "Lichen species richness",
-    colour = "Host tree species"
+    fill = "Host tree species"
   ) +
-  scale_colour_manual(
+  scale_fill_manual(
     values = tree_species_cols,
     labels = function(x) {
       parse(text = pretty_tree_species_labels(x))
@@ -521,8 +532,6 @@ fig8b <- ggplot(
     x = "WHIA category",
     y = "Predicted occurrence probability"
   )
-
-fig8b
 
 #Combine into one figure
 figure8 <- (fig8a | fig8b) +
