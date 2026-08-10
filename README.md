@@ -1,4 +1,4 @@
-# Do deer population control measures affect epiphytic lichen biodiversity in Scottish rainforests?
+# Contemporary Woodland Herbivore Impact on Epiphytic Lichen Communities in Atlantic Rainforests
 
 This repository contains the data-processing and statistical analysis workflows
 associated with an MSc dissertation investigating relationships between woodland
