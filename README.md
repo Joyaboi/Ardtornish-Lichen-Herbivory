@@ -107,6 +107,6 @@ Key R packages include:
 Scripts are numbered according to the order in which major processing and
 analytical steps are performed.
 
-##AI Transparency
+## AI Transparency
 
 ChatGPT 5.6 – Luna was used in the creation of this GitHub repository and the code contained within it. Specifically, this AI model assisted with the development of the repository structure and README, as well as portions of the code in scripts/01_data_prep.R, scripts/08_figures.R, and scripts/09_tables.R. AI was used primarily for debugging and troubleshooting, and no AI-generated code was incorporated without manual review and verification.
