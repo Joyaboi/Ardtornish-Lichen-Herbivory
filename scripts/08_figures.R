@@ -19,7 +19,7 @@ library(ggeffects)
 ####Save Figures: On or OFF####
 
 
-save_figures <- TRUE
+save_figures <- FALSE
 
 #True = Figures will save
 
@@ -392,14 +392,14 @@ tree_richness <- lichen_data %>%
 #Tree colours
 
 tree_species_cols <- c(
-  "#76C000",  # lime green
-  "#AA00FF",  # purple
-  "#FF6A00",  # orange
-  "#FF1744",  # red
-  "#00C853",  # green
-  "#FFD600",  # gold
-  "#008CFF",   # blue
-  "#E6007A"  # magenta
+  "#A7FF2E",  # very bright lime
+  "#9000FF",  # vivid purple
+  "#FFAA00",  # vivid orange
+  "#FF0000",  # deep red
+  "#0B4001",  # dark green
+  "#FFEA00",  # bright gold
+  "#008CFF",  # vivid blue
+  "#FF87B7"   # bright pink/magenta
 )
 
 names(tree_species_cols) <- unique(tree_richness$tree_species)
