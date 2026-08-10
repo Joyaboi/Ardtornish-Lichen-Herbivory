@@ -73,13 +73,21 @@ The raw data are separated into datasets describing the 15 analysed woodland sit
 The numbered R scripts are intended to document the analytical workflow sequentially:
 
 01_data_prep.R — Data preparation and transformation.
+
 02_species_richness.R — Analysis of lichen species richness and occurrence.
+
 03_species_turnover.R — Analysis of species turnover and species-specific responses to WHIA.
+
 04_functional_traits.R — Analysis of lichen functional traits and functional group turnover.
+
 05_community_composition.R — Analysis and visualisation of community composition.
+
 06_spatial_dissimilarity.R — Analysis of spatial patterns in community dissimilarity.
+
 07_exploratory_analysis.R — Additional exploratory analyses.
+
 08_figures.R — Generation of dissertation figures.
+
 09_tables.R — Generation of dissertation tables.
 
 ### Other files
