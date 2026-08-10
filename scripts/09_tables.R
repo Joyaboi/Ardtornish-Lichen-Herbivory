@@ -8,7 +8,7 @@ library(dplyr)
 library(tidyr)
 
 
-####Table T1: Summary of Sampling Effort, Analytical Sampling Structure, and Lichen Dataset Composition####
+####Table 1: Summary of Sampling Effort, Analytical Sampling Structure, and Lichen Dataset Composition####
 
 
 #Calculate analytical sampling metrics
@@ -77,9 +77,9 @@ quadrats_per_tree <- lichen_data %>%
 
 n_quadrats_surveyed <- n_trees * quadrats_per_tree
 
-#Create Table T1
+#Create Table 1
 
-table_T1 <- tibble(
+table_1 <- tibble(
   Metric = c(
     "WHIA categories",
     "Sites sampled",
@@ -112,58 +112,10 @@ table_T1 <- tibble(
   )
 )
 
-table_T1
+table_01
 
 
-####Table T3: Fixed-Effect Estimates from the Functional Group Occurrence Model####
-
-
-#Fix factor
-func_pa$WHIA <- factor(
-  func_pa$WHIA,
-  levels = c(
-    "low_impact",
-    "medium_impact",
-    "high_impact"
-  )
-)
-
-#Extract fixed effects
-
-table_T3 <- summary(m_func_rich)$coefficients %>%
-  as.data.frame() %>%
-  tibble::rownames_to_column("Term") %>%
-  filter(
-    Term %in% c(
-      "WHIAmedium_impact",
-      "WHIAhigh_impact"
-    )
-  ) %>%
-  mutate(
-    `WHIA Comparison` = c(
-      "Medium-impact vs. low-impact",
-      "High-impact vs. low-impact"
-    ),
-    `Estimate (β ± SE)` = paste0(
-      sprintf("%.3f", Estimate),
-      " ± ",
-      sprintf("%.3f", `Std. Error`)
-    ),
-    `p-value` = sprintf(
-      "%.3f",
-      `Pr(>|z|)`
-    )
-  ) %>%
-  select(
-    `WHIA Comparison`,
-    `Estimate (β ± SE)`,
-    `p-value`
-  )
-
-table_T3
-
-
-####Table T4: Fixed-Effect Estimates from the Hierarchical Species Occurrence Model####
+####Table 2: Fixed-Effect Estimates from the Hierarchical Species Occurrence Model####
 
 
 #Fix Factor
@@ -178,7 +130,7 @@ species_pa$WHIA <- factor(
 
 #Extract fixed effects
 
-table_T4 <- summary(m_rich)$coefficients %>%
+table_2 <- summary(m_rich)$coefficients %>%
   as.data.frame() %>%
   tibble::rownames_to_column("Term") %>%
   filter(
@@ -208,10 +160,9 @@ table_T4 <- summary(m_rich)$coefficients %>%
     `p-value`
   )
 
-table_T4
+table_2
 
-
-####Table T5: Hierarchical Model Comparisons####
+####Table 3: Species Model Comparisons####
 
 
 #Compare occurrence model with reduced turnover model
@@ -230,9 +181,9 @@ comparison_2 <- anova(
   test = "Chisq"
 )
 
-#Create Table T5
+#Create Table 3
 
-table_T5 <- tibble(
+table_3 <- tibble(
   `Model comparison` = c(
     "Occurrence model vs. turnover model",
     "Site turnover vs. species x WHIA variation model"
@@ -269,10 +220,58 @@ table_T5 <- tibble(
     )
   )
 
-table_T5
+table_3
 
 
-####Table T6: Hierarchical Model Comparisons####
+####Table 4: Fixed-Effect Estimates from the Functional Group Occurrence Model####
+
+
+#Fix factor
+func_pa$WHIA <- factor(
+  func_pa$WHIA,
+  levels = c(
+    "low_impact",
+    "medium_impact",
+    "high_impact"
+  )
+)
+
+#Extract fixed effects
+
+table_4 <- summary(m_func_rich)$coefficients %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column("Term") %>%
+  filter(
+    Term %in% c(
+      "WHIAmedium_impact",
+      "WHIAhigh_impact"
+    )
+  ) %>%
+  mutate(
+    `WHIA Comparison` = c(
+      "Medium-impact vs. low-impact",
+      "High-impact vs. low-impact"
+    ),
+    `Estimate (β ± SE)` = paste0(
+      sprintf("%.3f", Estimate),
+      " ± ",
+      sprintf("%.3f", `Std. Error`)
+    ),
+    `p-value` = sprintf(
+      "%.3f",
+      `Pr(>|z|)`
+    )
+  ) %>%
+  select(
+    `WHIA Comparison`,
+    `Estimate (β ± SE)`,
+    `p-value`
+  )
+
+table_4
+
+
+####Table 5: Functional Model Comparisons####
 
 
 #Compare occurrence model with reduced turnover model
@@ -291,9 +290,9 @@ comparison_2 <- anova(
   test = "Chisq"
 )
 
-#Create Table T6
+#Create Table 5
 
-table_T6 <- tibble(
+table_5 <- tibble(
   `Model comparison` = c(
     "Occurrence model vs. site turnover model",
     "Site turnover vs. functional group x WHIA variation"
@@ -330,7 +329,7 @@ table_T6 <- tibble(
     )
   )
 
-table_T6
+table_5
 
 
 ####Table A1: Species Richness Model Estimates####
