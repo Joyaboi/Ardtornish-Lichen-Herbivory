@@ -29,24 +29,44 @@ save_figures <- FALSE
 ####Helper Functions####
 
 
-#Format species names
+# Format lichen names for plot labels
 pretty_species <- function(x) {
   sapply(x, function(i) {
+    
+    # Other category
+    if (i == "Other") {
+      return("Other")
+    }
+    
+    # Genus-level identification
+    if (grepl("_sp$", i)) {
+      genus <- sub("_sp$", "", i)
+      
+      # Capitalise genus
+      genus <- paste0(
+        toupper(substr(genus, 1, 1)),
+        substr(genus, 2, nchar(genus))
+      )
+      
+      return(parse(text = paste0(
+        "italic('", genus, "')~'sp.'"
+      )))
+    }
+    
+    # Binomial species names
     parts <- strsplit(i, "_")[[1]]
     
-    if(length(parts) >= 2){
-      species <- ifelse(
-        parts[2] == "sp",
-        paste0(parts[1], " sp."),
-        paste(
-          tools::toTitleCase(parts[1]),
-          tolower(parts[2])
-        )
-      )
-      species
-    } else{
-      tools::toTitleCase(gsub("_", " ", i))
-    }
+    # Capitalise genus
+    parts[1] <- paste0(
+      toupper(substr(parts[1], 1, 1)),
+      substr(parts[1], 2, nchar(parts[1]))
+    )
+    
+    parse(text = paste0(
+      "italic('",
+      paste(parts, collapse = " "),
+      "')"
+    ))
   })
 }
 
@@ -134,7 +154,6 @@ names(tree_species_cols) <- unique(tree_richness$tree_species)
 
 
 ####Figures 7a & 7b: Lichen species obs frequency####
-
 
 #Create WHIA ordered factor
 lichen_data <- lichen_data %>%
@@ -287,19 +306,7 @@ fig7b <- ggplot(
   ) +
   scale_fill_manual(
     values = species_cols,
-    labels = function(x) {
-      sapply(x, function(i) {
-        if(i == "Other") {
-          "Other"
-        } else {
-          parse(text = paste0(
-            "italic('",
-            pretty_species(i),
-            "')"
-          ))
-        }
-      })
-    }
+    labels = pretty_species
   ) +
   scale_x_discrete(
     labels = c(
@@ -568,118 +575,6 @@ ggsave(
 )
 }
 
-####Figure 9: Species Level Response to WHIA####
-
-
-# Model:
-
-# presabs ~ WHIA +
-# (1|lichen_species) +
-# (1|site_id) +
-# (1|lichen_species:WHIA) +
-# (1|lichen_species:site_id)
-
-# Create predictions for every species across WHIA categories
-
-species_predictions <- ggpredict(
-  m_turnover1,
-  terms = c("WHIA", "lichen_species"),
-  type = "random"
-) %>%
-  as.data.frame()
-
-# Format WHIA categories
-
-species_predictions$x <- factor(
-  species_predictions$x,
-  levels = c(
-    "low_impact",
-    "medium_impact",
-    "high_impact"
-  ),
-  labels = c(
-    "Low Impact",
-    "Medium Impact",
-    "High Impact"
-  )
-)
-
-head(species_predictions)
-
-# Calculate mean predicted occurrence across species
-
-species_mean <- species_predictions %>%
-  group_by(x) %>%
-  summarise(
-    mean_prediction = mean(predicted),
-    .groups = "drop"
-  )
-
-species_mean$x <- factor(
-  species_mean$x,
-  levels = c(
-    "Low Impact",
-    "Medium Impact",
-    "High Impact"
-  )
-)
-
-# Plot
-
-figure9 <- ggplot(
-  species_predictions,
-  aes(
-    x = x,
-    y = predicted,
-    group = group
-  )
-) +
-  geom_line(
-    colour = "grey70",
-    linewidth = 0.4,
-    alpha = 1.0
-  ) +
-  geom_line(
-    data = species_mean,
-    aes(
-      x = x,
-      y = mean_prediction,
-      group = 1
-    ),
-    colour = "#C0392B",
-    linewidth = 1.5
-  ) +
-  scale_x_discrete(
-    expand = c(0.05, 0)
-  ) +
-  labs(
-    x = "WHIA category",
-    y = "Predicted probability of species occurrence",
-    title = NULL
-  ) +
-  theme_classic(
-    base_size = 15
-  ) +
-  theme(
-    axis.title.x = element_text(size = 18),
-    axis.title.y = element_text(size = 18)
-  )
-
-figure9
-
-# Save Plot
-
-if (save_figures) {
-  ggsave(
-    filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_09.png",
-    plot = figure9,
-    width = 24.6,
-    height = 14.5,
-    units = "cm",
-    dpi = 600
-  )
-}
-
 
 ####Figures 10a & 10b: Species Community NMDS####
 
@@ -883,308 +778,143 @@ if (save_figures) {
 }
 
 
-####Figures 11a, 11b, and 11c: Dissimilarity####
+####Figures 11a & 11b: Dissimilarity####
 
 
-#####11a: Site Dissimilarity#####
-
-#Create site-level community matrix
-
-site_species <- lichen_data %>%
-  distinct(site_id, lichen_species) %>%
-  mutate(presabs = 1) %>%
-  pivot_wider(
-    names_from = lichen_species,
-    values_from = presabs,
-    values_fill = 0
-  )
-
-#Convert to matrix
-
-site_species_matrix <- site_species %>%
-  column_to_rownames("site_id") %>%
-  as.matrix()
-
-#Save row order
-
-site_order <- rownames(site_species_matrix)
-
-#Reorder coordinates to match matrix
-
-site_coords_ordered <- site_coords %>%
-  filter(site_id %in% site_order) %>%
-  arrange(match(site_id, site_order))
-
-#Check ordering
-
-identical(
-  site_order,
-  site_coords_ordered$site_id
-)
-
-#Ecological distance matrix
-
-ecological_dist <- vegdist(
-  site_species_matrix,
-  method = "jaccard",
-  binary = TRUE
-)
-
-#Geographic distance matrix
-
-geo_dist <- dist(
-  site_coords_ordered %>%
-    select(xcoord, ycoord)
-)
-
-#Combine distances into a dataframe
-
-distance_df <- data.frame(
-  ecological_distance = as.vector(ecological_dist),
-  geographic_distance = as.vector(geo_dist)
-)
-
-#Check
-
-head(distance_df)
-
-#Distance-decay plot
+#####11a Site Dissimilarity#####
 
 fig11a <- ggplot(
-  distance_df,
+  dist_decay,
   aes(
-    x = geographic_distance,
-    y = ecological_distance
+    x = distance_km,
+    y = dissimilarity
   )
 ) +
+  
   geom_point(
-    size = 2,
-    alpha = 0.7
+    aes(
+      colour = outer,
+      fill = inner
+    ),
+    shape = 21,
+    size = 3.5,
+    stroke = 1.7
   ) +
+  
   geom_smooth(
     method = "lm",
     se = TRUE,
-    colour = "black"
+    colour = "black",
+    fill = "grey75",
+    linewidth = 1
   ) +
+  
+  scale_colour_manual(
+    name = "WHIA category",
+    values = c(
+      Low = "#3350FF",
+      Medium = "#D9B300",
+      High = "#FC3F3F"
+    )
+  ) +
+
+  scale_fill_manual(
+    name = "WHIA comparison",
+    values = c(
+      Low = "#3350FF",
+      Medium = "#D9B300",
+      High = "#FC3F3F"
+    ),
+    guide = guide_legend(order = 2)
+  ) +
+  
+  scale_y_continuous(
+    breaks = seq(0.3, 1, 0.1),
+    expand = expansion(mult = c(0.03, 0.02))
+  ) +
+  
   labs(
-    x = "Distance between sites (m)",
-    y = "Pairwise Jaccard dissimilarity",
-    title = NULL
+    x = "Geographic distance between sites (km)",
+    y = "Sørensen dissimilarity"
   ) +
   theme_classic(
     base_size = 14
-  ) +
-  theme(
-    axis.title.y = element_text(size = 18)
   )
 
-#####11b: Tree Dissimilarity#####
-
-#Create tree x species matrix
-
-tree_species_matrix <- species_pa %>%
-  select(
-    tree_id,
-    lichen_species,
-    presabs
-  ) %>%
-  pivot_wider(
-    names_from = lichen_species,
-    values_from = presabs,
-    values_fill = 0
-  )
-
-#Convert to community matrix
-
-tree_comm <- tree_species_matrix %>%
-  column_to_rownames("tree_id")
-
-#Ecological distance matrix
-
-ecological_dist_tree <- vegdist(
-  tree_comm,
-  method = "jaccard"
-)
-
-#Save row order
-
-tree_order <- rownames(tree_comm)
-
-#Reorder coordinates to match matrix
-
-tree_coords_ordered <- tree_coords %>%
-  filter(tree_id %in% tree_order) %>%
-  arrange(match(tree_id, tree_order))
-
-#Geographic distance matrix
-
-geo_dist_tree <- dist(
-  tree_coords_ordered %>%
-    select(xcoord, ycoord)
-)
-
-#Combine distances into a dataframe
-
-tree_decay <- data.frame(
-  Geographic = as.vector(geo_dist_tree),
-  Ecological = as.vector(ecological_dist_tree)
-)
-
-#Distance-decay plot
+#####11b: Within-site versus between-site dissimilarity#####
 
 fig11b <- ggplot(
-  tree_decay,
+  tree_pairs,
   aes(
-    Geographic,
-    Ecological
+    x = comparison,
+    y = dissimilarity,
+    fill = comparison
   )
 ) +
-  geom_point(
-    size = 2,
-    alpha = 0.7
+  geom_violin(
+    width = 0.8,
+    alpha = 0.5,
+    trim = TRUE
   ) +
-  geom_smooth(
-    method = "lm",
-    se = TRUE,
-    colour = "black"
-  ) +
-  theme_classic(
-    base_size = 14
-  ) +
-  labs(
-    x = "Distance between trees (m)",
-    y = NULL,
-    title = NULL
-  )
-
-#Mantel test
-
-mantel(
-  ecological_dist_tree,
-  geo_dist_tree,
-  permutations = 999
-)
-
-#####11c: Tree Pairwise Dissimilarity by WHIA Pairing#####
-
-#Convert ecological distance matrix to dataframe
-
-eco_df <- as.data.frame(
-  as.matrix(ecological_dist_tree)
-)
-
-eco_df$tree1 <- rownames(eco_df)
-
-#Convert to pairwise format
-
-eco_df <- eco_df %>%
-  pivot_longer(
-    cols = -tree1,
-    names_to = "tree2",
-    values_to = "dissimilarity"
-  ) %>%
-  filter(tree1 < tree2)
-
-#Add WHIA information
-
-tree_meta <- species_pa %>%
-  distinct(
-    tree_id,
-    WHIA
-  )
-
-eco_df <- eco_df %>%
-  left_join(
-    tree_meta,
-    by = c("tree1" = "tree_id")
-  ) %>%
-  rename(
-    WHIA1 = WHIA
-  ) %>%
-  left_join(
-    tree_meta,
-    by = c("tree2" = "tree_id")
-  ) %>%
-  rename(
-    WHIA2 = WHIA
-  )
-
-#Create WHIA pairing categories
-
-eco_df <- eco_df %>%
-  mutate(
-    Pair = case_when(
-      WHIA1 == "low_impact" &
-        WHIA2 == "low_impact" ~ "L-L",
-      
-      WHIA1 == "medium_impact" &
-        WHIA2 == "medium_impact" ~ "M-M",
-      
-      WHIA1 == "high_impact" &
-        WHIA2 == "high_impact" ~ "H-H",
-      
-      WHIA1 != WHIA2 ~ "Between",
-      
-      TRUE ~ NA_character_
-    )
-  )
-
-eco_df$Pair <- factor(
-  eco_df$Pair,
-  levels = c(
-    "L-L",
-    "M-M",
-    "H-H",
-    "Between"
-  )
-)
-
-#Plot
-
-fig11c <- ggplot(
-  eco_df,
-  aes(
-    Pair,
-    dissimilarity,
-    fill = Pair
-  )
-) +
-  geom_boxplot(
-    colour = "black",
-    outlier.shape = NA
-  ) +
+  
   scale_fill_manual(
     values = c(
-      "L-L" = "#3350FF",
-      "M-M" = "#D9B300",
-      "H-H" = "#FC3F3F",
-      "Between" = "grey70"
-    ),
-    guide = "none"
+      "Within site" = "#36AD3A",
+      "Between sites" = "#7B36AD"
+    )
   ) +
-  geom_jitter(
-    width = 0.15,
-    alpha = 0.35,
-    size = 0.6
+  
+  stat_summary(
+    fun = mean,
+    geom = "crossbar",
+    width = 0.45,
+    fatten = 1,
+    linewidth = 1.3,
+    colour = "black"
   ) +
+  
+  stat_summary(
+    fun = median,
+    geom = "crossbar",
+    width = 0.45,
+    fatten = 1,
+    linewidth = 1.1,
+    linetype = "dotted",
+    colour = "black"
+  ) +
+  
+  scale_y_continuous(
+    limits = c(0, 1),
+    breaks = seq(0, 1, 0.2)
+  ) +
+  
+  labs(
+    x = NULL,
+    y = NULL
+  ) +
+  
   theme_classic(
     base_size = 14
   ) +
-  labs(
-    x = "WHIA comparison",
-    y = NULL,
-    title = NULL
+  
+  guides(
+    fill = "none"
   )
 
 #####Combine Figure 11#####
 
-figure11 <- (
-  fig11a |
-    fig11b |
-    fig11c
-) +
-  plot_annotation(
-    tag_levels = "a"
+figure11 <- (fig11a | fig11b) +
+  plot_layout(guides = "collect") &
+  theme(
+    legend.position = "bottom",
+    legend.box = "horizontal",
+    legend.text = element_text(size = 14)
+  )
+
+figure11 <- figure11 +
+  plot_annotation(tag_levels = "a") &
+  theme(
+    plot.margin = margin(0, 0, 0, 0)
   )
 
 figure11
@@ -1196,7 +926,7 @@ if (save_figures) {
     filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_11.png",
     plot = figure11 + plot_annotation(tag_levels = "a"),
     width = 24.6,
-    height = 12,
+    height = 14.5,
     units = "cm",
     dpi = 600
   )
@@ -1482,153 +1212,6 @@ ggsave(
 )
 }
 
-
-####Figure 13: Functional NMDS####
-
-
-set.seed(123)
-
-#Tree × functional group presence/absence matrix
-
-morph_matrix <- func_pa %>%
-  select(
-    tree_id,
-    functional_group,
-    presabs
-  ) %>%
-  pivot_wider(
-    names_from = functional_group,
-    values_from = presabs,
-    values_fill = 0
-  )
-
-#Community matrix for vegan
-
-morph_comm <- morph_matrix %>%
-  column_to_rownames("tree_id")
-
-#Run NMDS
-
-nmds_morph <- metaMDS(
-  morph_comm,
-  distance = "jaccard",
-  k = 2,
-  trymax = 100
-)
-
-nmds_morph$stress
-
-#Extract NMDS scores
-
-scores_morph <- as.data.frame(
-  scores(
-    nmds_morph,
-    display = "sites"
-  )
-)
-
-scores_morph$tree_id <- rownames(scores_morph)
-
-#Add metadata
-
-scores_morph <- scores_morph %>%
-  left_join(
-    lichen_data %>%
-      distinct(
-        tree_id,
-        WHIA,
-        site_id,
-        tree_species
-      ),
-    by = "tree_id"
-  )
-
-#Order WHIA
-
-scores_morph$WHIA <- factor(
-  scores_morph$WHIA,
-  levels = c(
-    "low_impact",
-    "medium_impact",
-    "high_impact"
-  )
-)
-
-#Plot
-
-fig13 <- ggplot(
-  scores_morph,
-  aes(
-    NMDS1,
-    NMDS2,
-    colour = WHIA
-  )
-) +
-  geom_point(
-    size = 3
-  ) +
-  stat_ellipse(
-    level = 0.95,
-    linewidth = 1
-  ) +
-  scale_colour_manual(
-    values = c(
-      low_impact = "#3350FF",
-      medium_impact = "#D9B300",
-      high_impact = "#FC3F3F"
-    ),
-    labels = c(
-      low_impact = "Low Impact",
-      medium_impact = "Medium Impact",
-      high_impact = "High Impact"
-    ),
-    name = "WHIA"
-  ) +
-  theme_classic(
-    base_size = 14
-  ) +
-  labs(
-    x = "NMDS1",
-    y = "NMDS2",
-    colour = "WHIA"
-  ) +
-  theme(
-    legend.position = "bottom",
-    legend.box = "horizontal",
-    legend.text = element_text(size = 15),
-    legend.margin = margin(
-      t = -5,
-      r = 2,
-      b = 0,
-      l = 0
-    )
-  )
-
-#PERMANOVA
-
-adonis2(
-  morph_comm ~ WHIA,
-  data = scores_morph,
-  method = "jaccard"
-)
-
-figure13 <- fig13
-
-figure13
-
-#Save Plot
-
-if (save_figures) {
-ggsave(
-  filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_13.png",
-  plot = figure13,
-  width = 24.6,
-  height = 14.5,
-  units = "cm",
-  dpi = 600
-)
-}
-
 ####Figure A1: Tree Size & Lichen Richness####
 
 figure_A1 <- ggplot(
@@ -1671,6 +1254,227 @@ if (save_figures) {
     plot = figure_A1,
     width = 24.6,
     height = 14.5,
+    units = "cm",
+    dpi = 600
+  )
+}
+
+####Figure A2 a & b: Species & Functional Group Level Response to WHIA####
+
+#####Figure A2a: Species Level Response#####
+
+# Model:
+
+# presabs ~ WHIA +
+# (1|lichen_species) +
+# (1|site_id) +
+# (1|lichen_species:WHIA) +
+# (1|lichen_species:site_id)
+
+# Create predictions for every species across WHIA categories
+
+species_predictions <- ggpredict(
+  m_turnover1,
+  terms = c("WHIA", "lichen_species"),
+  type = "random"
+) %>%
+  as.data.frame()
+
+# Format WHIA categories
+
+species_predictions$x <- factor(
+  species_predictions$x,
+  levels = c(
+    "low_impact",
+    "medium_impact",
+    "high_impact"
+  ),
+  labels = c(
+    "Low Impact",
+    "Medium Impact",
+    "High Impact"
+  )
+)
+
+head(species_predictions)
+
+# Calculate mean predicted occurrence across species
+
+species_mean <- species_predictions %>%
+  group_by(x) %>%
+  summarise(
+    mean_prediction = mean(predicted),
+    .groups = "drop"
+  )
+
+species_mean$x <- factor(
+  species_mean$x,
+  levels = c(
+    "Low Impact",
+    "Medium Impact",
+    "High Impact"
+  )
+)
+
+# Plot
+
+figa2a <- ggplot(
+  species_predictions,
+  aes(
+    x = x,
+    y = predicted,
+    group = group
+  )
+) +
+  geom_line(
+    colour = "grey70",
+    linewidth = 0.4,
+    alpha = 1.0
+  ) +
+  geom_line(
+    data = species_mean,
+    aes(
+      x = x,
+      y = mean_prediction,
+      group = 1
+    ),
+    colour = "#C0392B",
+    linewidth = 1.5
+  ) +
+  scale_x_discrete(
+    expand = c(0.05, 0)
+  ) +
+  labs(
+    x = "WHIA category",
+    y = "Predicted probability of species occurrence",
+    title = NULL
+  ) +
+  theme_classic(
+    base_size = 15
+  ) +
+  theme(
+    axis.title.x = element_text(size = 18),
+    axis.title.y = element_text(size = 18)
+  )
+
+
+#####Figure A2b: Functional Group Level Response####
+
+
+# Model:
+
+# presabs ~ WHIA +
+# (1|functional_group) +
+# (1|site_id) +
+# (1|functional_group) +
+# (1|functional_group:site_id)
+
+# Create predictions for every species across WHIA categories
+
+functional_predictions <- ggpredict(
+  m_func_turnover1,
+  terms = c("WHIA", "functional_group"),
+  type = "random"
+) %>%
+  as.data.frame()
+
+# Format WHIA categories
+
+functional_predictions$x <- factor(
+  functional_predictions$x,
+  levels = c(
+    "low_impact",
+    "medium_impact",
+    "high_impact"
+  ),
+  labels = c(
+    "Low Impact",
+    "Medium Impact",
+    "High Impact"
+  )
+)
+
+head(functional_predictions)
+
+# Calculate mean predicted occurrence across functional group
+
+functional_mean <- functional_predictions %>%
+  group_by(x) %>%
+  summarise(
+    mean_prediction = mean(predicted),
+    .groups = "drop"
+  )
+
+functional_mean$x <- factor(
+  functional_mean$x,
+  levels = c(
+    "Low Impact",
+    "Medium Impact",
+    "High Impact"
+  )
+)
+
+# Plot
+
+figa2b <- ggplot(
+  functional_predictions,
+  aes(
+    x = x,
+    y = predicted,
+    group = group
+  )
+) +
+  geom_line(
+    colour = "grey70",
+    linewidth = 0.4,
+    alpha = 1.0
+  ) +
+  geom_line(
+    data = functional_mean,
+    aes(
+      x = x,
+      y = mean_prediction,
+      group = 1
+    ),
+    colour = "#C0392B",
+    linewidth = 1.5
+  ) +
+  scale_x_discrete(
+    expand = c(0.05, 0)
+  ) +
+  labs(
+    x = "WHIA category",
+    y = "Predicted probability of functional group occurrence",
+    title = NULL
+  ) +
+  theme_classic(
+    base_size = 15
+  ) +
+  theme(
+    axis.title.x = element_text(size = 18),
+    axis.title.y = element_text(size = 18)
+  )
+
+#Combine figures
+
+figurea2 <- (figa2a | figa2b)
+
+figure11 <- figure11 +
+  plot_annotation(tag_levels = "a") &
+  theme(
+    plot.margin = margin(0, 0, 0, 0)
+  )
+
+figurea2
+
+#Save Plot
+
+if (save_figures) {
+  ggsave(
+    filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_A2.png",
+    plot = figurea2 + plot_annotation(tag_levels = "a"),
+    width = 24.6,
+    height = 16,
     units = "cm",
     dpi = 600
   )
