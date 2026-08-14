@@ -1,4 +1,4 @@
-# Contemporary Woodland Herbivore Impact on Epiphytic Lichen Communities in Atlantic Rainforests
+# No Effects of Contemporary Woodland Herbivore Impact on Epiphytic Lichen Communities in Atlantic Rainforests
 
 This repository contains the data-processing and statistical analysis workflows
 associated with an MSc dissertation investigating relationships between woodland
