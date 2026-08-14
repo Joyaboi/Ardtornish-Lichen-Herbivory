@@ -56,7 +56,7 @@ func_pa$WHIA <- factor(
   )
 )
 
-#####Functional Richness#####
+#####Functional Occurrence#####
 
 m_func_rich <- glmer(
   presabs ~ WHIA +
@@ -68,7 +68,7 @@ m_func_rich <- glmer(
 
 summary(m_func_rich)
 
-#####Functional Richness + Confounders#####
+#####Functional Occurrence + Confounders#####
 
 m_func_rich_cov <- glmer(
   presabs ~ WHIA +
@@ -82,7 +82,7 @@ m_func_rich_cov <- glmer(
   family = binomial
 )
 
-#####Compare Functional Richness Models#####
+#####Compare Functional Occurrence Models#####
 
 AIC(m_func_rich, m_func_rich_cov)
 

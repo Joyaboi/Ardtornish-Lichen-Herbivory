@@ -19,7 +19,7 @@ library(ggeffects)
 ####Save Figures: On or OFF####
 
 
-save_figures <- FALSE
+save_figures <- TRUE
 
 #True = Figures will save
 
@@ -153,7 +153,7 @@ tree_species_cols <- scales::hue_pal()(
 names(tree_species_cols) <- unique(tree_richness$tree_species)
 
 
-####Figures 7a & 7b: Lichen species obs frequency####
+####Figures 5a & 5b: Lichen species obs frequency####
 
 #Create WHIA ordered factor
 lichen_data <- lichen_data %>%
@@ -168,7 +168,7 @@ lichen_data <- lichen_data %>%
     )
   )
 
-#####7a: Rank Abundance Curve#####
+#####5a: Rank Abundance Curve#####
 
 #Calculate obs per species
 species_obs <- lichen_data %>%
@@ -254,7 +254,7 @@ names(species_cols) <- species_levels
 species_cols["Other"] <- "grey70"
 
 #Rank abundance curve
-fig7a <- ggplot(
+fig5a <- ggplot(
   species_obs,
   aes(
     x = species_rank,
@@ -289,10 +289,10 @@ fig7a <- ggplot(
 
 #Label the most common species
 
-#####7b: Species composition by WHIA#####
+#####5b: Species composition by WHIA#####
 
 #Plot
-fig7b <- ggplot(
+fig5b <- ggplot(
   species_comp,
   aes(
     x = WHIA,
@@ -334,7 +334,7 @@ fig7b <- ggplot(
   )
 
 #Combine Figures
-figure7 <- (fig7a | fig7b) +
+figure5 <- (fig5a | fig5b) +
   plot_layout(guides = "collect") +
   guides(
     fill = guide_legend(
@@ -348,19 +348,19 @@ figure7 <- (fig7a | fig7b) +
     legend.text = element_text(size = 14)
   )
 
-figure7 <- figure7 +
+figure5 <- figure5 +
   plot_annotation(tag_levels = "a") &
   theme(
     plot.margin = margin(0, 0, 0, 0)
   )
 
-figure7
+figure5
 
 #Save Plot
 if (save_figures) {
 ggsave(
-  filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_07.png",
-  plot = figure7 + plot_annotation(tag_levels = "a"),
+  filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_05.png",
+  plot = figure5 + plot_annotation(tag_levels = "a"),
   width = 24.6,
   height = 14.5,
   units = "cm",
@@ -369,421 +369,12 @@ ggsave(
 }
 
 
-####Figures 8a & 8b: Richness####
+####Figures 6a & 6b: Dissimilarity####
 
 
-#Create tree richness dataset
-tree_richness <- lichen_data %>%
-  group_by(tree_id) %>%
-  summarise(
-    richness = n_distinct(lichen_species),
-    site_id = first(site_id),
-    WHIA = first(WHIA),
-    tree_species = first(tree_species),
-    dbh_scaled = first(dbh_scaled),
-    bark_roughness_class = first(bark_roughness_class),
-    canopy_scaled = first(canopy_scaled),
-    .groups = "drop"
-  ) %>%
-  mutate(
-    WHIA = factor(
-      WHIA,
-      levels = c(
-        "low_impact",
-        "medium_impact",
-        "high_impact"
-      )
-    )
-  )
+#####6a Site Dissimilarity#####
 
-#Tree colours
-
-tree_species_cols <- c(
-  "#A7FF2E",  # very bright lime
-  "#9000FF",  # vivid purple
-  "#FFAA00",  # vivid orange
-  "#FF0000",  # deep red
-  "#0B4001",  # dark green
-  "#FFEA00",  # bright gold
-  "#008CFF",  # vivid blue
-  "#FF87B7"   # bright pink/magenta
-)
-
-names(tree_species_cols) <- unique(tree_richness$tree_species)
-
-#####8a: Richness by WHIA#####
-
-fig8a <- ggplot(
-  tree_richness,
-  aes(
-    x = WHIA,
-    y = richness,
-    fill = tree_species
-  )
-) +
-  geom_boxplot(
-    aes(group = WHIA),
-    width = 0.55,
-    fill = "grey95",
-    colour = "black",
-    outlier.shape = NA
-  ) +
-  geom_point(
-    position = position_jitter(width = 0.15),
-    size = 2.5,
-    alpha = 0.9,
-    shape = 21,
-    colour = "grey20",
-    stroke = 0.75
-  ) +
-  scale_x_discrete(
-    labels = c(
-      low_impact = "Low",
-      medium_impact = "Medium",
-      high_impact = "High"
-    )
-  ) +
-  labs(
-    x = "WHIA category",
-    y = "Lichen species richness",
-    fill = "Host tree species"
-  ) +
-  scale_fill_manual(
-    values = tree_species_cols,
-    labels = function(x) {
-      parse(text = pretty_tree_species_labels(x))
-    }
-  ) +
-  theme_classic(base_size = 14)
-
-#####8b: Predicted species occurrence probability#####
-
-#Set WHIA factor order
-species_pa <- species_pa %>%
-  mutate(
-    WHIA = factor(
-      WHIA,
-      levels = c(
-        "low_impact",
-        "medium_impact",
-        "high_impact"
-      )
-    )
-  )
-
-func_pa <- func_pa %>%
-  mutate(
-    WHIA = factor(
-      WHIA,
-      levels = c(
-        "low_impact",
-        "medium_impact",
-        "high_impact"
-      )
-    )
-  )
-
-m_rich <- glmer(
-  presabs ~ WHIA +
-    (1|lichen_species) +
-    (1|site_id),
-  data = species_pa,
-  family = binomial
-)
-
-m_func_rich <- glmer(
-  presabs ~ WHIA +
-    (1|functional_group) +
-    (1|site_id),
-  data = func_pa,
-  family = binomial
-)
-
-#Generate model predictions
-species_rich_pred <- ggpredict(
-  m_rich,
-  terms = "WHIA"
-)
-
-species_rich_pred
-
-fig8b <- ggplot(
-  species_rich_pred,
-  aes(
-    x = x,
-    y = predicted
-  )
-) +
-  geom_point(
-    size = 4
-  ) +
-  geom_errorbar(
-    aes(
-      ymin = conf.low,
-      ymax = conf.high
-    ),
-    width = 0.1,
-    linewidth = 0.8
-  ) +
-  theme_classic(
-    base_size = 14
-  ) +
-  scale_x_discrete(
-    labels = c(
-      low_impact = "Low",
-      medium_impact = "Medium",
-      high_impact = "High"
-    )
-  ) +
-  labs(
-    x = "WHIA category",
-    y = "Predicted occurrence probability"
-  )
-
-#Combine into one figure
-figure8 <- (fig8a | fig8b) +
-  plot_layout(guides = "collect") +
-  guides(
-    fill = guide_legend(
-      nrow = 4,
-      byrow = TRUE
-    )
-  ) &
-  theme(
-    legend.position = "bottom",
-    legend.box = "horizontal",
-    legend.text = element_text(size = 12)
-  )
-
-figure8 <- figure8 +
-  plot_annotation(tag_levels = "a") &
-  theme(
-    plot.margin = margin(0, 0, 0, 0)
-  )
-
-figure8
-
-#Save Plot
-if (save_figures) {
-ggsave(
-  filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_08.png",
-  plot = figure8 + plot_annotation(tag_levels = "a"),
-  width = 24.6,
-  height = 14.5,
-  units = "cm",
-  dpi = 600
-)
-}
-
-
-####Figures 10a & 10b: Species Community NMDS####
-
-
-#####10a: Species Community NMDS#####
-
-#Create tree x species matrix
-
-species_matrix <- species_pa %>%
-  select(
-    tree_id,
-    lichen_species,
-    presabs
-  ) %>%
-  pivot_wider(
-    names_from = lichen_species,
-    values_from = presabs,
-    values_fill = 0
-  )
-
-#Convert to a matrix
-
-species_comm <- species_matrix %>%
-  column_to_rownames("tree_id")
-
-#Run NMDS
-
-set.seed(123)
-
-nmds_species <- metaMDS(
-  species_comm,
-  distance = "jaccard",
-  k = 2,
-  trymax = 100
-)
-
-#Create plotting dataframe
-
-scores_species <- as.data.frame(
-  scores(
-    nmds_species,
-    display = "sites"
-  )
-)
-
-scores_species$tree_id <- rownames(scores_species)
-
-scores_species <- scores_species %>%
-  left_join(
-    lichen_data %>%
-      distinct(
-        tree_id,
-        WHIA,
-        site_id,
-        tree_species
-      ),
-    by = "tree_id"
-  )
-
-#Order WHIA
-
-scores_species$WHIA <- factor(
-  scores_species$WHIA,
-  levels = c(
-    "low_impact",
-    "medium_impact",
-    "high_impact"
-  )
-)
-
-#Plot
-
-fig10a <- ggplot(
-  scores_species,
-  aes(
-    NMDS1,
-    NMDS2,
-    colour = WHIA
-  )
-) +
-  geom_point(
-    size = 2
-  ) +
-  stat_ellipse(
-    level = 0.95,
-    linewidth = 1
-  ) +
-  scale_colour_manual(
-    values = c(
-      low_impact = "#3350FF",
-      medium_impact = "#D9B300",
-      high_impact = "#FC3F3F"
-    ),
-    labels = c(
-      low_impact = "Low Impact",
-      medium_impact = "Medium Impact",
-      high_impact = "High Impact"
-    ),
-    name = "WHIA"
-  ) +
-  theme_classic(
-    base_size = 14
-  ) +
-  labs(
-    x = "NMDS1",
-    y = "NMDS2",
-    colour = "WHIA"
-  ) +
-  guides(
-    colour = guide_legend(
-      nrow = 3,
-      byrow = TRUE
-    )
-  ) +
-  theme(
-    legend.position = "bottom",
-    legend.box = "horizontal",
-    legend.text = element_text(size = 13),
-    legend.margin = margin(t = -5, r = 2, b = 0, l = 0)
-  )
-
-
-#####10b: NMDS by Site#####
-
-scores_species <- scores_species %>%
-  mutate(
-    site_group = sub(
-      "[0-9]+$",
-      "",
-      site_id
-    )
-  )
-
-fig10b <- ggplot(
-  scores_species,
-  aes(
-    NMDS1,
-    NMDS2,
-    colour = site_group
-  )
-) +
-  geom_point(
-    size = 2,
-    alpha = 0.8
-  ) +
-  stat_ellipse(
-    aes(
-      group = site_group
-    ),
-    type = "t",
-    level = 0.95,
-    linewidth = 1
-  ) +
-  scale_colour_brewer(
-    palette = "Dark2"
-  ) +
-  theme_classic(
-    base_size = 14
-  ) +
-  labs(
-    x = "NMDS1",
-    y = "NMDS2",
-    colour = "Site group"
-  ) +
-  guides(
-    colour = guide_legend(
-      nrow = 3,
-      byrow = TRUE
-    )
-  ) +
-  theme(
-    legend.position = "bottom",
-    legend.box = "horizontal",
-    legend.text = element_text(size = 13),
-    legend.margin = margin(t = -5, r = 2, b = 0, l = 0)
-  )
-
-
-#####Combine Figures#####
-
-figure10 <- (fig10a | fig10b) +
-  plot_annotation(
-    tag_levels = "a"
-  ) &
-  theme(
-    plot.margin = margin(0, 0, 0, 0)
-  )
-
-figure10
-
-#Save Plot
-if (save_figures) {
-  ggsave(
-    filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_10.png",
-    plot = figure10 + plot_annotation(tag_levels = "a"),
-    width = 24.6,
-    height = 14.5,
-    units = "cm",
-    dpi = 600
-  )
-}
-
-
-####Figures 11a & 11b: Dissimilarity####
-
-
-#####11a Site Dissimilarity#####
-
-fig11a <- ggplot(
+fig6a <- ggplot(
   dist_decay,
   aes(
     x = distance_km,
@@ -817,7 +408,7 @@ fig11a <- ggplot(
       High = "#FC3F3F"
     )
   ) +
-
+  
   scale_fill_manual(
     name = "WHIA comparison",
     values = c(
@@ -841,9 +432,9 @@ fig11a <- ggplot(
     base_size = 14
   )
 
-#####11b: Within-site versus between-site dissimilarity#####
+#####6b: Within-site versus between-site dissimilarity#####
 
-fig11b <- ggplot(
+fig6b <- ggplot(
   tree_pairs,
   aes(
     x = comparison,
@@ -901,9 +492,9 @@ fig11b <- ggplot(
     fill = "none"
   )
 
-#####Combine Figure 11#####
+#####Combine Figure 6#####
 
-figure11 <- (fig11a | fig11b) +
+figure6 <- (fig6a | fig6b) +
   plot_layout(guides = "collect") &
   theme(
     legend.position = "bottom",
@@ -911,20 +502,20 @@ figure11 <- (fig11a | fig11b) +
     legend.text = element_text(size = 14)
   )
 
-figure11 <- figure11 +
+figure6 <- figure6 +
   plot_annotation(tag_levels = "a") &
   theme(
     plot.margin = margin(0, 0, 0, 0)
   )
 
-figure11
+figure6
 
 #Save Plot
 
 if (save_figures) {
   ggsave(
-    filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_11.png",
-    plot = figure11 + plot_annotation(tag_levels = "a"),
+    filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_6.png",
+    plot = figure6 + plot_annotation(tag_levels = "a"),
     width = 24.6,
     height = 14.5,
     units = "cm",
@@ -933,10 +524,217 @@ if (save_figures) {
 }
 
 
-####Figures 12a, 12b, and 12c: Functional Composition####
+####Figures 7a & 7b: Richness####
 
 
-#####12a: Photobiont Groups#####
+#Create tree richness dataset
+tree_richness <- lichen_data %>%
+  group_by(tree_id) %>%
+  summarise(
+    richness = n_distinct(lichen_species),
+    site_id = first(site_id),
+    WHIA = first(WHIA),
+    tree_species = first(tree_species),
+    dbh_scaled = first(dbh_scaled),
+    bark_roughness_class = first(bark_roughness_class),
+    canopy_scaled = first(canopy_scaled),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    WHIA = factor(
+      WHIA,
+      levels = c(
+        "low_impact",
+        "medium_impact",
+        "high_impact"
+      )
+    )
+  )
+
+#Tree colours
+
+tree_species_cols <- c(
+  "#A7FF2E",  # very bright lime
+  "#9000FF",  # vivid purple
+  "#FFAA00",  # vivid orange
+  "#FF0000",  # deep red
+  "#0B4001",  # dark green
+  "#FFEA00",  # bright gold
+  "#008CFF",  # vivid blue
+  "#FF87B7"   # bright pink/magenta
+)
+
+names(tree_species_cols) <- unique(tree_richness$tree_species)
+
+#####7a: Richness by WHIA#####
+
+fig7a <- ggplot(
+  tree_richness,
+  aes(
+    x = WHIA,
+    y = richness,
+    fill = tree_species
+  )
+) +
+  geom_boxplot(
+    aes(group = WHIA),
+    width = 0.55,
+    fill = "grey95",
+    colour = "black",
+    outlier.shape = NA
+  ) +
+  geom_point(
+    position = position_jitter(width = 0.15),
+    size = 2.5,
+    alpha = 0.9,
+    shape = 21,
+    colour = "grey20",
+    stroke = 0.75
+  ) +
+  scale_x_discrete(
+    labels = c(
+      low_impact = "Low",
+      medium_impact = "Medium",
+      high_impact = "High"
+    )
+  ) +
+  labs(
+    x = "WHIA category",
+    y = "Lichen species richness",
+    fill = "Host tree species"
+  ) +
+  scale_fill_manual(
+    values = tree_species_cols,
+    labels = function(x) {
+      parse(text = pretty_tree_species_labels(x))
+    }
+  ) +
+  theme_classic(base_size = 14)
+
+#####7b: Predicted species occurrence probability#####
+
+#Set WHIA factor order
+species_pa <- species_pa %>%
+  mutate(
+    WHIA = factor(
+      WHIA,
+      levels = c(
+        "low_impact",
+        "medium_impact",
+        "high_impact"
+      )
+    )
+  )
+
+func_pa <- func_pa %>%
+  mutate(
+    WHIA = factor(
+      WHIA,
+      levels = c(
+        "low_impact",
+        "medium_impact",
+        "high_impact"
+      )
+    )
+  )
+
+m_rich <- glmer(
+  presabs ~ WHIA +
+    (1|lichen_species) +
+    (1|site_id),
+  data = species_pa,
+  family = binomial
+)
+
+m_func_rich <- glmer(
+  presabs ~ WHIA +
+    (1|functional_group) +
+    (1|site_id),
+  data = func_pa,
+  family = binomial
+)
+
+#Generate model predictions
+species_rich_pred <- ggpredict(
+  m_rich,
+  terms = "WHIA"
+)
+
+species_rich_pred
+
+fig7b <- ggplot(
+  species_rich_pred,
+  aes(
+    x = x,
+    y = predicted
+  )
+) +
+  geom_point(
+    size = 4
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = conf.low,
+      ymax = conf.high
+    ),
+    width = 0.1,
+    linewidth = 0.8
+  ) +
+  theme_classic(
+    base_size = 14
+  ) +
+  scale_x_discrete(
+    labels = c(
+      low_impact = "Low",
+      medium_impact = "Medium",
+      high_impact = "High"
+    )
+  ) +
+  labs(
+    x = "WHIA category",
+    y = "Predicted occurrence probability"
+  )
+
+#Combine into one figure
+figure7 <- (fig7a | fig7b) +
+  plot_layout(guides = "collect") +
+  guides(
+    fill = guide_legend(
+      nrow = 4,
+      byrow = TRUE
+    )
+  ) &
+  theme(
+    legend.position = "bottom",
+    legend.box = "horizontal",
+    legend.text = element_text(size = 12)
+  )
+
+figure7 <- figure7 +
+  plot_annotation(tag_levels = "a") &
+  theme(
+    plot.margin = margin(0, 0, 0, 0)
+  )
+
+figure7
+
+#Save Plot
+if (save_figures) {
+ggsave(
+  filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_07.png",
+  plot = figure7 + plot_annotation(tag_levels = "a"),
+  width = 24.6,
+  height = 14.5,
+  units = "cm",
+  dpi = 600
+)
+}
+
+
+####Figures 8a, 8b, and 8c: Functional Composition####
+
+
+#####8a: Photobiont Groups#####
 
 func_comp <- lichen_data %>%
   mutate(
@@ -966,7 +764,7 @@ functional_cols <- c(
   "Unknown" = "grey70"
 )
 
-fig12a <- ggplot(
+fig8a <- ggplot(
   func_comp,
   aes(
     x = WHIA,
@@ -1003,7 +801,7 @@ fig12a <- ggplot(
     base_size = 14
   )
 
-#####12b: Morphotype Composition#####
+#####8b: Morphotype Composition#####
 
 morph_comp <- lichen_data %>%
   mutate(
@@ -1042,7 +840,7 @@ morphotype_cols <- c(
   "Unknown" = "grey70"
 )
 
-fig12b <- ggplot(
+fig8b <- ggplot(
   morph_comp,
   aes(
     x = WHIA,
@@ -1082,7 +880,7 @@ fig12b <- ggplot(
     axis.title.x = element_text(size = 18)
   )
 
-#####12c: Predicted Functional Group Occurrence Probability#####
+#####8c: Predicted Functional Group Occurrence Probability#####
 
 func_rich_pred <- ggpredict(
   m_func_rich,
@@ -1091,7 +889,7 @@ func_rich_pred <- ggpredict(
 
 func_rich_pred
 
-fig12c <- ggplot(
+fig8c <- ggplot(
   func_rich_pred,
   aes(
     x = x,
@@ -1124,7 +922,7 @@ fig12c <- ggplot(
     y = "Predicted functional group\noccurrence probability"
   )
 
-fig12c_note <- ggplot() +
+fig8c_note <- ggplot() +
   annotate(
     "text",
     x = 0.5,
@@ -1138,7 +936,7 @@ fig12c_note <- ggplot() +
   ) +
   theme_void()
 
-fig12a_with_legend <- fig12a +
+fig8a_with_legend <- fig8a +
   theme(
     legend.position = "bottom",
     legend.box = "vertical",
@@ -1150,7 +948,7 @@ fig12a_with_legend <- fig12a +
     legend.spacing.y = unit(0.5, "cm")
   )
 
-fig12b_with_legend <- fig12b +
+fig8b_with_legend <- fig8b +
   theme(
     legend.position = "bottom",
     legend.box = "horizontal",
@@ -1162,7 +960,7 @@ fig12b_with_legend <- fig12b +
     legend.spacing.y = unit(0.5, "cm")
   )
 
-fig12c_with_caption <- fig12c +
+fig8c_with_caption <- fig8c +
   labs(
     caption = stringr::str_wrap(
       "*Functional groups are defined by lichen morphotype x photobiont type",
@@ -1178,10 +976,10 @@ fig12c_with_caption <- fig12c +
     plot.caption.position = "plot"
   )
 
-figure12 <- (
-  fig12a_with_legend |
-    fig12b_with_legend |
-    fig12c_with_caption
+figure8 <- (
+  fig8a_with_legend |
+    fig8b_with_legend |
+    fig8c_with_caption
 ) +
   plot_layout(
     widths = c(1, 1, 1)
@@ -1190,7 +988,7 @@ figure12 <- (
     tag_levels = "a"
   )
 
-figure12 <- figure12 +
+figure8 <- figure8 +
   plot_annotation(
     tag_levels = "a"
   ) &
@@ -1198,13 +996,13 @@ figure12 <- figure12 +
     plot.margin = margin(0, 0, 0.5, 0)
   )
 
-figure12
+figure8
 
 #Save Plot
 if (save_figures) {
 ggsave(
-  filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_12.png",
-  plot = figure12 + plot_annotation(tag_levels = "a"),
+  filename = "D:/Desktop/UoE/Dissertation/Diss_Repo/figures/figure_8.png",
+  plot = figure8 + plot_annotation(tag_levels = "a"),
   width = 24.6,
   height = 14.5,
   units = "cm",
@@ -1240,7 +1038,7 @@ figure_A1 <- ggplot(
     }
   ) +
   labs(
-    x = "Diameter at breast height (cm)",
+    x = "Scaled DBH (z-score)",
     y = "Lichen species richness",
     colour = "Host tree species"
   ) +
@@ -1459,7 +1257,7 @@ figa2b <- ggplot(
 
 figurea2 <- (figa2a | figa2b)
 
-figure11 <- figure11 +
+figurea2 <- figurea2 +
   plot_annotation(tag_levels = "a") &
   theme(
     plot.margin = margin(0, 0, 0, 0)

@@ -96,6 +96,8 @@ summary_climate
 ####Sampling Completeness####
 
 
+set.seed(123)
+
 #####Whole Landscape#####
 
 # Species x site incidence matrix

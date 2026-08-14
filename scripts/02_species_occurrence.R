@@ -11,10 +11,6 @@ library(lme4)
 
 ####Load Data####
 
-
-#Load processed dataset
-lichen_data <- read.csv("data/processed/lichen_data.csv")
-
 #####Create Presence/Absence Table#####
 
 #Create presence/absence table with tree-level covariates
@@ -45,7 +41,7 @@ species_pa <- lichen_data %>%
   )
 
 
-####Species Richness Models####
+####Species Occurrence Models####
 
 
 #Does WHIA influence the probability that a given lichen species occurs on a tree?

@@ -12,6 +12,7 @@ library(ggeffects)
 
 #####Functional Turnover#####
 
+#Functional WHIA turnover model
 m_func_turnover1 <- glmer(
   presabs ~ WHIA +
     (1|functional_group) +
@@ -24,6 +25,7 @@ m_func_turnover1 <- glmer(
 
 summary(m_func_turnover1)
 
+#Functional site turnover model
 m_func_turnover2 <- glmer(
   presabs ~ WHIA +
     (1|functional_group) +
@@ -66,7 +68,7 @@ anova(
   test = "Chisq"
 )
 
-#####Test Functional Turnover#####
+#####Test Functional Turnover against Richness#####
 
 anova(
   m_func_rich,
